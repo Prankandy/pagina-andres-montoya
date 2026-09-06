@@ -19,7 +19,9 @@ Pagina Andres F. Montoya/
 ├── js/main.js          # Menú móvil, datos de contacto, formulario
 ├── js/effects.js       # Animaciones, chat simulado y efectos (se apagan con "reducir movimiento")
 ├── assets/favicon.svg  # Ícono de la pestaña
-├── robots.txt          # Permite indexar el sitio
+├── robots.txt          # Permite indexar el sitio y apunta al sitemap
+├── sitemap.xml         # Mapa del sitio para Google (URLs limpias de Vercel)
+├── assets/og.png       # Imagen de vista previa al compartir el enlace (1200×630)
 ├── vercel.json         # Configuración para publicar en Vercel (URLs limpias: /servicios, /contacto…)
 └── README.md
 ```
@@ -76,5 +78,6 @@ o [Formspree](https://formspree.io) cambiando el `submit` en `js/main.js`.
 Gracias a `cleanUrls` en `vercel.json`, las páginas quedan como `/servicios`, `/contacto`, etc.
 También funciona en Netlify o GitHub Pages sin cambios.
 
-Cuando tengas la URL final, descomenta y completa las etiquetas `og:url` y `og:image`
-en el `<head>` de `index.html` para que el enlace se vea bien al compartirlo por WhatsApp.
+El sitio está publicado en <https://andresfmontoya.vercel.app>. Las etiquetas `canonical`, `og:url`
+y `og:image` de cada página ya apuntan ahí; si cambias de dominio, reemplázalo en las 7 páginas,
+en `sitemap.xml` y en `robots.txt`.
