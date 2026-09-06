@@ -1,0 +1,13 @@
+# Sistema
+Thumbs.db
+.DS_Store
+*.log
+
+# Archivos temporales de verificación
+_harness_tmp.html
+
+# Vercel (si algún día usas la CLI)
+.vercel
+
+# Configuración personal del editor
+.vscode/

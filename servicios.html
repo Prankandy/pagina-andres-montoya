@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Servicios · Andrés F. Montoya</title>
+  <meta name="description" content="Servicios de desarrollo de software: facturación electrónica (DIAN, RADIAN, soporte), tiendas Shopify, aplicaciones web, e-commerce, automatización de procesos, integraciones y apps de escritorio.">
+  <meta name="theme-color" content="#0b0f14">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Servicios · Andrés F. Montoya">
+  <meta property="og:description" content="Tiendas Shopify, aplicaciones web, e-commerce, automatización de procesos, integraciones y apps de escritorio.">
+  <meta property="og:locale" content="es_CO">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Decide si corren las animaciones: interruptor "Efectos" del pie (guardado en el navegador) o preferencia del sistema -->
+  <script>(function(){var c="fx-on";try{var v=localStorage.getItem("efectos");if(v==="off"||(v!=="on"&&matchMedia("(prefers-reduced-motion: reduce)").matches))c="fx-off"}catch(e){}document.documentElement.classList.add(c)})();</script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Ir al contenido</a>
+
+  <!-- CABECERA (igual en todas las páginas) -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Inicio">
+        <span class="brand-mark" aria-hidden="true">AM</span>
+        <span class="brand-name">Andrés F. Montoya</span>
+      </a>
+      <nav class="site-nav" id="site-nav" aria-label="Navegación principal">
+        <a href="sobre-mi.html">Sobre mí</a>
+        <a href="servicios.html" aria-current="page">Servicios</a>
+        <a href="facturacion-electronica.html">Facturación</a>
+        <a href="proyectos.html">Proyectos</a>
+        <a href="proceso.html">Proceso</a>
+        <a href="contacto.html" class="btn btn-primary btn-sm">Contacto</a>
+      </nav>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="section page-head">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow mono">// servicios</p>
+          <h1 class="page-title">¿En qué te puedo ayudar?</h1>
+          <p class="section-intro">
+            Cada proyecto se cotiza según su alcance. Escríbeme y te envío una propuesta clara, sin compromiso.
+          </p>
+        </div>
+
+        <div class="feature reveal" id="facturacion-electronica">
+          <div>
+            <p class="eyebrow mono">// especialidad</p>
+            <h2>Facturación electrónica: mi campo más fuerte</h2>
+            <p>Más de 3 años en campo con negocios y contadores en Colombia: implementación, soporte del día a día, documentos y eventos RADIAN, e integraciones que traen los datos del adquiriente desde la DIAN para evitar errores de digitación.</p>
+            <div class="hero-actions">
+              <a href="facturacion-electronica.html" class="btn btn-primary">Ver todo lo que cubro</a>
+              <a href="contacto.html?tipo=facturacion-electronica" class="btn btn-ghost">Consultar mi caso</a>
+            </div>
+          </div>
+          <ul class="feature-list">
+            <li><strong>Implementación</strong><span>Puesta en marcha y pruebas ante la DIAN</span></li>
+            <li><strong>Soporte</strong><span>Rechazos, correcciones, notas y documento soporte</span></li>
+            <li><strong>RADIAN</strong><span>Eventos y documentos electrónicos al día</span></li>
+            <li><strong>Integraciones</strong><span>Adquirientes desde la DIAN, inventarios y contabilidad</span></li>
+          </ul>
+        </div>
+
+        <div class="service-group reveal">
+          <h2 class="group-title">Tiendas online</h2>
+          <div class="cards-grid">
+            <article class="card" id="shopify">
+              <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20l4-1L18.5 8.5a2.1 2.1 0 0 0-3-3L5 16z"/><path d="M13.5 6.5l3 3"/></svg></div>
+              <h3 class="card-title">Personalización de tiendas Shopify</h3>
+              <p>Adapto tu tienda a tu marca y a cómo vendes: secciones nuevas, plantillas de producto y colección, páginas especiales y ajustes de diseño sobre el tema, sin romper las actualizaciones.</p>
+              <ul class="card-list">
+                <li>Secciones y plantillas a la medida (Liquid)</li>
+                <li>Diseño ajustado a tu marca</li>
+                <li>Optimización para celular</li>
+              </ul>
+            </article>
+
+            <article class="card" id="shopify-apps">
+              <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><path d="M17 14v6M14 17h6"/></svg></div>
+              <h3 class="card-title">Complementos a la medida para Shopify</h3>
+              <p>Cuando la tienda necesita algo que Shopify no trae de fábrica, lo construyo: apps privadas, Shopify Functions para descuentos por volumen o reglas de envío, cargas masivas e integraciones con otros sistemas.</p>
+              <ul class="card-list">
+                <li>Apps privadas y Shopify Functions</li>
+                <li>Descuentos y reglas personalizadas</li>
+                <li>Migración y carga masiva de productos</li>
+              </ul>
+            </article>
+
+            <article class="card" id="ecommerce">
+              <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/><path d="M3 4h2l2.4 11h11.2L21 8H7"/></svg></div>
+              <h3 class="card-title">E-commerce y catálogos a la medida</h3>
+              <p>Tiendas en línea propias, fuera de Shopify: carrito, pedidos por WhatsApp y un panel para que administres productos y precios sin tocar código.</p>
+              <ul class="card-list">
+                <li>Catálogo con filtros</li>
+                <li>Pedidos y checkout</li>
+                <li>Panel administrativo</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <div class="service-group reveal">
+          <h2 class="group-title">Sistemas y automatización</h2>
+          <div class="cards-grid cols-2">
+            <article class="card" id="web">
+              <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg></div>
+              <h3 class="card-title">Aplicaciones web a la medida</h3>
+              <p>Paneles administrativos, dashboards con indicadores, sistemas de inventario o contabilidad y herramientas internas para tu equipo.</p>
+              <ul class="card-list">
+                <li>React, Next.js, Node.js</li>
+                <li>Bases de datos MySQL / SQL Server</li>
+                <li>Usuarios, roles y reportes</li>
+              </ul>
+            </article>
+
+            <article class="card" id="automatizacion">
+              <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></div>
+              <h3 class="card-title">Automatización de procesos</h3>
+              <p>Reemplazo tareas manuales repetitivas: extracción de datos, consolidación de inventarios, reportes Excel automáticos y cargas masivas.</p>
+              <ul class="card-list">
+                <li>Conexión a SQL Server / MySQL</li>
+                <li>Reportes Excel y PDF</li>
+                <li>Scripts de carga masiva</li>
+              </ul>
+            </article>
+
+            <article class="card" id="integraciones">
+              <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l2.8-2.8a4 4 0 0 0-5.7-5.7l-1.2 1.2"/><path d="M14 10a4 4 0 0 0-5.7 0l-2.8 2.8a4 4 0 0 0 5.7 5.7l1.2-1.2"/></svg></div>
+              <h3 class="card-title">Integraciones con otros sistemas</h3>
+              <p>Conecto tus sistemas entre sí y con servicios externos: software contable, facturación electrónica, pasarelas, APIs de terceros y Shopify.</p>
+              <ul class="card-list">
+                <li>APIs REST</li>
+                <li>Facturación electrónica</li>
+                <li>Sincronización de datos</li>
+              </ul>
+            </article>
+
+            <article class="card" id="escritorio">
+              <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
+              <h3 class="card-title">Aplicaciones de escritorio Windows</h3>
+              <p>Herramientas nativas en C# y .NET para tareas que necesitan integrarse con el sistema: overlays, capturas, utilidades y automatización local.</p>
+              <ul class="card-list">
+                <li>C# / .NET / WinForms</li>
+                <li>Integración con Windows</li>
+                <li>Instaladores y soporte</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SOFTWARE DISPONIBLE: sistemas de facturación por tipo de negocio -->
+    <!-- ============================================================ -->
+    <section class="section section-alt" id="software">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow mono">// software disponible</p>
+          <h2>Posfac: sistema de facturación para tu tipo de negocio</h2>
+          <p class="section-intro">
+            Además del desarrollo a la medida, trabajo con <strong>Posfac</strong>, el sistema de facturación
+            distribuido por <strong>Pronetsys SAS</strong>, la empresa con la que trabajo. No es un solo programa
+            genérico: hay una versión para cada tipo de negocio, y cada una reúne en un solo lugar todo lo que
+            necesitas para operar el día a día. Me cuentas qué negocio tienes y te entrego la versión que le
+            corresponde, con soporte cubierto por nuestro canal oficial siempre que lo necesites.
+          </p>
+        </div>
+
+        <div class="cards-grid">
+          <article class="card reveal">
+            <span class="card-badge mono">Incluido</span>
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h6M9 16h6"/></svg>
+            </div>
+            <h3 class="card-title">Facturación electrónica</h3>
+            <p>Emite facturas electrónicas válidas ante la DIAN desde el mismo sistema: clientes, productos, impuestos y envío de cada factura en segundos, con soporte por nuestro canal oficial cuando lo necesites.</p>
+            <ul class="card-list">
+              <li>Clientes, productos e impuestos</li>
+              <li>Validación ante la DIAN</li>
+              <li>Historial y reenvío de facturas</li>
+            </ul>
+          </article>
+
+          <article class="card reveal">
+            <span class="card-badge mono">Incluido</span>
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M3 9v6l9 5 9-5V9"/></svg>
+            </div>
+            <h3 class="card-title">Gestión de inventarios</h3>
+            <p>Cada venta descuenta existencias. Controla entradas, salidas y conteos físicos, y detecta diferencias entre lo que dice el sistema y lo que hay en bodega.</p>
+            <ul class="card-list">
+              <li>Entradas, salidas y saldos</li>
+              <li>Conteos físicos y diferencias</li>
+              <li>Reportes en Excel</li>
+            </ul>
+          </article>
+
+          <article class="card reveal">
+            <span class="card-badge mono">Incluido</span>
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M6 15l4-4 3 3 5-6"/><path d="M15 8h3v3"/></svg>
+            </div>
+            <h3 class="card-title">Reportes financieros</h3>
+            <p>Ventas, ingresos, gastos y cartera en un dashboard claro: cuánto entra y sale cada día, cada semana y cada mes, sin armar nada en Excel.</p>
+            <ul class="card-list">
+              <li>Ingresos, gastos y cartera</li>
+              <li>Reportes en PDF</li>
+              <li>Dashboard con indicadores</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="inline-cta reveal">
+          <p>Cuéntame qué tipo de negocio tienes y te muestro la versión de Posfac que le corresponde.</p>
+          <a href="contacto.html?tipo=facturacion" class="btn btn-primary">Consultar para mi negocio</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div class="container">
+        <div class="cta-inner reveal">
+          <div>
+            <h2>¿No ves exactamente lo que necesitas?</h2>
+            <p>Escríbeme igual. Muchos proyectos combinan varios de estos servicios.</p>
+          </div>
+          <a href="contacto.html" class="btn btn-primary">Hablemos</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- PIE DE PÁGINA (igual en todas las páginas) -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year">2026</span> Andrés F. Montoya · Desarrollo de software</p>
+      <nav class="footer-nav" aria-label="Pie de página">
+        <a href="index.html">Inicio</a>
+        <a href="sobre-mi.html">Sobre mí</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="facturacion-electronica.html">Facturación</a>
+        <a href="proyectos.html">Proyectos</a>
+        <a href="proceso.html">Proceso</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/effects.js"></script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Facturación electrónica en Colombia: implementación, soporte, RADIAN e integraciones · Andrés F. Montoya</title>
+  <meta name="description" content="Implementación y soporte de facturación electrónica ante la DIAN, documentos y eventos RADIAN, integración de adquirientes desde la base de datos de la DIAN, inventarios y reportes. Más de 3 años en campo con negocios y contadores en Colombia.">
+  <meta name="keywords" content="facturación electrónica, DIAN, RADIAN, soporte facturación electrónica, software de facturación, integración facturación electrónica, contadores, Colombia, Medellín, Posfac, Pronetsys, documento soporte, notas crédito">
+  <meta name="theme-color" content="#0b0f14">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Facturación electrónica en Colombia · Andrés F. Montoya">
+  <meta property="og:description" content="Implementación, soporte, eventos RADIAN e integraciones de facturación electrónica para negocios y contadores. Más de 3 años en campo.">
+  <meta property="og:locale" content="es_CO">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Decide si corren las animaciones: interruptor "Efectos" del pie (guardado en el navegador) o preferencia del sistema -->
+  <script>(function(){var c="fx-on";try{var v=localStorage.getItem("efectos");if(v==="off"||(v!=="on"&&matchMedia("(prefers-reduced-motion: reduce)").matches))c="fx-off"}catch(e){}document.documentElement.classList.add(c)})();</script>
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Facturación electrónica: implementación, soporte, RADIAN e integraciones",
+    "areaServed": "Colombia",
+    "provider": { "@type": "Person", "name": "Andrés F. Montoya", "jobTitle": "Desarrollador de software" },
+    "audience": { "@type": "Audience", "audienceType": "Negocios, contadores y firmas contables" }
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Ir al contenido</a>
+
+  <!-- CABECERA (igual en todas las páginas) -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Inicio">
+        <span class="brand-mark" aria-hidden="true">AM</span>
+        <span class="brand-name">Andrés F. Montoya</span>
+      </a>
+      <nav class="site-nav" id="site-nav" aria-label="Navegación principal">
+        <a href="sobre-mi.html">Sobre mí</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="facturacion-electronica.html" aria-current="page">Facturación</a>
+        <a href="proyectos.html">Proyectos</a>
+        <a href="proceso.html">Proceso</a>
+        <a href="contacto.html" class="btn btn-primary btn-sm">Contacto</a>
+      </nav>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- ============================================================ -->
+    <!-- CABECERA DE PÁGINA                                            -->
+    <!-- ============================================================ -->
+    <section class="section page-head rain-bg">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow mono">// facturación electrónica · DIAN · RADIAN</p>
+          <h1 class="page-title">Facturación electrónica sin dolores de cabeza</h1>
+          <p class="section-intro">
+            Más de 3 años acompañando negocios y contadores en Colombia con la facturación electrónica ante la DIAN:
+            desde la puesta en marcha hasta el soporte del día a día, los eventos RADIAN y las integraciones con el resto
+            de la operación. Es mi campo más fuerte.
+          </p>
+          <div class="hero-actions">
+            <a href="contacto.html?tipo=facturacion-electronica" class="btn btn-primary">Consultar mi caso</a>
+            <a href="#contadores" class="btn btn-ghost">Soy contador</a>
+          </div>
+        </div>
+
+        <ul class="stats reveal" aria-label="Resumen">
+          <li><strong>+3 años</strong><span>en campo con negocios reales</span></li>
+          <li><strong>DIAN y RADIAN</strong><span>documentos y eventos al día</span></li>
+          <li><strong>Soporte</strong><span>canal oficial, cuando lo necesites</span></li>
+          <li><strong>Integraciones</strong><span>adquirientes, inventarios, contabilidad</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- QUÉ CUBRO                                                     -->
+    <!-- ============================================================ -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow mono">// qué cubro</p>
+          <h2>Todo el entorno de la facturación electrónica</h2>
+          <p class="section-intro">No solo emitir facturas: que el proceso completo funcione y que nadie tenga que pelear con la DIAN.</p>
+        </div>
+
+        <div class="cards-grid">
+          <article class="card reveal" id="implementacion">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 13l2 2 4-4"/></svg>
+            </div>
+            <h3 class="card-title">Implementación y puesta en marcha</h3>
+            <p>Puesta en marcha de Posfac en tu negocio: habilitación, set de pruebas, resoluciones de numeración, impuestos, plantillas y capacitación del equipo para que factures desde el primer día.</p>
+            <ul class="card-list">
+              <li>Habilitación y pruebas ante la DIAN</li>
+              <li>Resoluciones, impuestos y plantillas</li>
+              <li>Capacitación a quien factura</li>
+            </ul>
+          </article>
+
+          <article class="card reveal" id="soporte">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0-9 9v4a2 2 0 0 0 2 2h2v-6H5a7 7 0 0 1 14 0h-2v6h2a2 2 0 0 0 2-2v-4a9 9 0 0 0-9-9z"/></svg>
+            </div>
+            <h3 class="card-title">Soporte y acompañamiento</h3>
+            <p>Cuando la DIAN rechaza un documento o hay que corregir algo, lo resuelvo: notas crédito y débito, documento soporte, reenvíos y ajustes de configuración. Siempre a través de nuestro canal de soporte, en el momento en que lo necesites.</p>
+            <ul class="card-list">
+              <li>Rechazos y validaciones de la DIAN</li>
+              <li>Notas crédito, débito y documento soporte</li>
+              <li>Canal de soporte siempre disponible</li>
+            </ul>
+          </article>
+
+          <article class="card reveal" id="radian">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/><path d="M17 16l2 2 3-3"/></svg>
+            </div>
+            <h3 class="card-title">Documentos y eventos RADIAN</h3>
+            <p>Registro y seguimiento de los eventos de la factura electrónica como título valor: acuse de recibo, recibo del bien o servicio y aceptación, para que tus facturas queden en regla.</p>
+            <ul class="card-list">
+              <li>Acuse de recibo y recibo del bien</li>
+              <li>Aceptación expresa o tácita</li>
+              <li>Seguimiento y trazabilidad</li>
+            </ul>
+          </article>
+
+          <article class="card reveal" id="adquirientes">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>
+            </div>
+            <h3 class="card-title">Adquirientes desde la base de datos de la DIAN</h3>
+            <p>Integración que trae los datos del cliente directamente desde la base de datos de la DIAN a partir del NIT. Se acaban los errores de digitación en nombres, direcciones y responsabilidades.</p>
+            <ul class="card-list">
+              <li>Datos del adquiriente por NIT</li>
+              <li>Cero errores de digitación</li>
+              <li>Facturas válidas a la primera</li>
+            </ul>
+          </article>
+
+          <article class="card reveal" id="operacion">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M3 9v6l9 5 9-5V9"/></svg>
+            </div>
+            <h3 class="card-title">Gestión interna y operativa</h3>
+            <p>La factura es el final de un proceso. Conecto la facturación con inventarios electrónicos, ventas y reportes financieros para que toda la operación cuadre.</p>
+            <ul class="card-list">
+              <li>Inventarios electrónicos</li>
+              <li>Reportes financieros y de ventas</li>
+              <li><a href="servicios.html#software">Posfac, con una versión por tipo de negocio</a></li>
+            </ul>
+          </article>
+
+          <article class="card reveal" id="desarrollo">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l2.8-2.8a4 4 0 0 0-5.7-5.7l-1.2 1.2"/><path d="M14 10a4 4 0 0 0-5.7 0l-2.8 2.8a4 4 0 0 0 5.7 5.7l1.2-1.2"/></svg>
+            </div>
+            <h3 class="card-title">Integraciones y desarrollo a la medida</h3>
+            <p>Conecto la facturación electrónica con lo que ya usas: software contable, bases de datos, tiendas Shopify o e-commerce, y aplicaciones propias de facturación.</p>
+            <ul class="card-list">
+              <li>Conectores con contabilidad y ERP</li>
+              <li>Facturación desde Shopify o e-commerce</li>
+              <li>Aplicaciones de facturación a la medida</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- PARA CONTADORES                                               -->
+    <!-- ============================================================ -->
+    <section class="section" id="contadores">
+      <div class="container contadores-grid">
+        <div class="reveal">
+          <p class="eyebrow mono">// para contadores y firmas contables</p>
+          <h2>Un aliado técnico para tus clientes</h2>
+          <p class="section-intro">
+            Tú llevas la contabilidad; yo me encargo de que la facturación electrónica de tus clientes funcione,
+            se integre y no te llene de tareas técnicas.
+          </p>
+          <div class="hero-actions">
+            <a href="contacto.html?tipo=facturacion-electronica" class="btn btn-primary">Hablemos</a>
+          </div>
+        </div>
+        <ul class="card-list contadores-list reveal">
+          <li>Implemento y doy soporte a la facturación de tus clientes, con o sin tu intervención.</li>
+          <li>Resuelvo rechazos, correcciones y eventos RADIAN sin que tengas que meterte en lo técnico.</li>
+          <li>Integro la facturación con inventarios y reportes para que la información te llegue limpia.</li>
+          <li>Capacito a quien factura en cada negocio para reducir errores desde el origen.</li>
+          <li>Puedo trabajar con varios clientes tuyos a la vez, con un solo punto de contacto.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- PREGUNTAS FRECUENTES                                          -->
+    <!-- ============================================================ -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="faq reveal faq-top">
+          <h2>Preguntas frecuentes sobre facturación electrónica</h2>
+          <details>
+            <summary>¿Con qué software de facturación trabajas?</summary>
+            <p>Con Posfac, el sistema de facturación distribuido por Pronetsys SAS, la empresa con la que trabajo. Tiene una versión para cada tipo de negocio y un canal de soporte que cubre cualquier necesidad en el momento en que aparece.</p>
+          </details>
+          <details>
+            <summary>¿Qué es RADIAN y por qué me importa?</summary>
+            <p>RADIAN es el registro de la DIAN donde se anotan los eventos de la factura electrónica como título valor: acuse de recibo, recibo del bien o servicio y aceptación. Tenerlos al día evita problemas con tus clientes, con tu contador y con la DIAN.</p>
+          </details>
+          <details>
+            <summary>¿Puedes conectar la facturación con mi inventario o mi software contable?</summary>
+            <p>Sí. Es justo lo que más hago: que cada venta facturada descuente inventario, que los datos del cliente vengan de la DIAN y que los reportes lleguen listos a contabilidad.</p>
+          </details>
+          <details>
+            <summary>¿Atiendes a contadores con varios clientes?</summary>
+            <p>Sí. Puedo ser el apoyo técnico de tu firma para varios negocios a la vez, con un solo punto de contacto y el respaldo del canal de soporte de Pronetsys SAS.</p>
+          </details>
+          <details>
+            <summary>¿Qué pasa si la DIAN rechaza un documento?</summary>
+            <p>Reviso la causa, corrijo la configuración o el dato que falló y reenvío el documento. Después ajusto el proceso para que no vuelva a pasar.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div class="container">
+        <div class="cta-inner reveal">
+          <div>
+            <h2>¿Facturación electrónica pendiente, con errores o sin soporte?</h2>
+            <p>Cuéntame cómo facturas hoy y te digo qué haría, cuánto tarda y cuánto cuesta.</p>
+          </div>
+          <a href="contacto.html?tipo=facturacion-electronica" class="btn btn-primary">Consultar</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- PIE DE PÁGINA (igual en todas las páginas) -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year">2026</span> Andrés F. Montoya · Desarrollo de software</p>
+      <nav class="footer-nav" aria-label="Pie de página">
+        <a href="index.html">Inicio</a>
+        <a href="sobre-mi.html">Sobre mí</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="facturacion-electronica.html">Facturación</a>
+        <a href="proyectos.html">Proyectos</a>
+        <a href="proceso.html">Proceso</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/effects.js"></script>
+</body>
+</html>

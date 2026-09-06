@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proyectos · Andrés F. Montoya</title>
+  <meta name="description" content="Proyectos de software desarrollados: apps Shopify, automatización de inventarios, e-commerce, sistemas contables, catálogos web y aplicaciones de escritorio.">
+  <meta name="theme-color" content="#0b0f14">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Proyectos · Andrés F. Montoya">
+  <meta property="og:description" content="Una muestra de lo que he construido para clientes y proyectos propios.">
+  <meta property="og:locale" content="es_CO">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Decide si corren las animaciones: interruptor "Efectos" del pie (guardado en el navegador) o preferencia del sistema -->
+  <script>(function(){var c="fx-on";try{var v=localStorage.getItem("efectos");if(v==="off"||(v!=="on"&&matchMedia("(prefers-reduced-motion: reduce)").matches))c="fx-off"}catch(e){}document.documentElement.classList.add(c)})();</script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Ir al contenido</a>
+
+  <!-- CABECERA (igual en todas las páginas) -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Inicio">
+        <span class="brand-mark" aria-hidden="true">AM</span>
+        <span class="brand-name">Andrés F. Montoya</span>
+      </a>
+      <nav class="site-nav" id="site-nav" aria-label="Navegación principal">
+        <a href="sobre-mi.html">Sobre mí</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="facturacion-electronica.html">Facturación</a>
+        <a href="proyectos.html" aria-current="page">Proyectos</a>
+        <a href="proceso.html">Proceso</a>
+        <a href="contacto.html" class="btn btn-primary btn-sm">Contacto</a>
+      </nav>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="section page-head">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow mono">// proyectos</p>
+          <h1 class="page-title">Algunos trabajos recientes</h1>
+          <p class="section-intro">Una muestra de lo que he construido para clientes y proyectos propios.</p>
+        </div>
+
+        <div class="projects-grid">
+          <article class="project reveal">
+            <p class="project-tag mono">Shopify · App + tema</p>
+            <h2 class="card-title">Migración masiva de productos y descuentos por volumen en Shopify</h2>
+            <p>App para una tienda mayorista multimarca: carga y migración masiva de productos, y una Shopify Function que aplica descuentos escalonados según la cantidad comprada. Incluye personalización del tema de la tienda.</p>
+            <ul class="chips chips-sm"><li>Shopify CLI</li><li>Functions</li><li>Liquid</li><li>Prisma</li></ul>
+          </article>
+
+          <article class="project reveal">
+            <p class="project-tag mono">Automatización · Multi-sede</p>
+            <h2 class="card-title">Consolidación automática de inventarios en varias sedes</h2>
+            <p>Sistema que se conecta al SQL Server de cada sede, cruza el inventario físico contra el del sistema, calcula diferencias, permite justificarlas y genera reportes Excel y dashboards con indicadores.</p>
+            <ul class="chips chips-sm"><li>Node.js</li><li>TypeScript</li><li>SQL Server</li><li>React</li><li>ExcelJS</li></ul>
+          </article>
+
+          <article class="project reveal">
+            <p class="project-tag mono">E-commerce · Panel admin</p>
+            <h2 class="card-title">Tienda online de videojuegos con panel administrativo</h2>
+            <p>Catálogo, carrito, checkout y un panel para administrar productos, categorías, pedidos y configuración sin tocar código. Diseño arcade-retro adaptado a la identidad del negocio.</p>
+            <ul class="chips chips-sm"><li>React</li><li>Vite</li><li>Tailwind</li><li>PHP</li><li>MySQL</li></ul>
+          </article>
+
+          <article class="project reveal">
+            <p class="project-tag mono">Sistema interno · Contabilidad</p>
+            <h2 class="card-title">Sistema contable con dashboard e informes en PDF</h2>
+            <p>Aplicación web para llevar la contabilidad de un negocio: registros, reportes en PDF y un dashboard interactivo con la información clave del día a día.</p>
+            <ul class="chips chips-sm"><li>Node.js</li><li>Express</li><li>MySQL</li><li>PDFKit</li></ul>
+          </article>
+
+          <article class="project reveal">
+            <p class="project-tag mono">Catálogo web · Pequeño negocio</p>
+            <h2 class="card-title">Catálogo web para una tienda de decoración y regalos</h2>
+            <p>Página y catálogo para un negocio de plantas, decoración y regalos hechos a mano, con panel administrativo para editar productos desde el celular. Publicada sin costo de hosting.</p>
+            <ul class="chips chips-sm"><li>HTML / CSS / JS</li><li>Vercel</li><li>Serverless</li></ul>
+          </article>
+
+          <article class="project reveal">
+            <p class="project-tag mono">Escritorio · Windows</p>
+            <h2 class="card-title">Ventana flotante de comentarios para streamers</h2>
+            <p>Para quien transmite con una sola pantalla: recorta la zona de comentarios del directo y la muestra en una ventana siempre visible que el mouse atraviesa, para leer el chat sin salir del juego.</p>
+            <ul class="chips chips-sm"><li>C#</li><li>.NET</li><li>WinForms</li><li>Win32 API</li></ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div class="container">
+        <div class="cta-inner reveal">
+          <div>
+            <h2>¿Quieres algo parecido para tu negocio?</h2>
+            <p>Cuéntame qué necesitas y te envío una propuesta clara, sin compromiso.</p>
+          </div>
+          <a href="contacto.html" class="btn btn-primary">Hablemos</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- PIE DE PÁGINA (igual en todas las páginas) -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year">2026</span> Andrés F. Montoya · Desarrollo de software</p>
+      <nav class="footer-nav" aria-label="Pie de página">
+        <a href="index.html">Inicio</a>
+        <a href="sobre-mi.html">Sobre mí</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="facturacion-electronica.html">Facturación</a>
+        <a href="proyectos.html">Proyectos</a>
+        <a href="proceso.html">Proceso</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/effects.js"></script>
+</body>
+</html>
