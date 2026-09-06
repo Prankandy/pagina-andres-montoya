@@ -765,3 +765,13 @@ html:not(.fx-on) .msg, html:not(.fx-on) .msg-typing i { animation: none; }
   .feature { padding: 1.5rem; }
 }
 @media (max-width: 600px) { .stats { grid-template-columns: 1fr; } }
+
+/* ---------- Proyecto destacado (ancho completo) ---------- */
+.project-featured {
+  grid-column: 1 / -1;
+  border-color: rgba(242, 201, 76, .45);
+  background: linear-gradient(135deg, rgba(242, 201, 76, .10), var(--surface) 60%);
+}
+.project-featured::before { opacity: 1; }
+.project-featured p { max-width: 70ch; }
+.project-featured .card-badge { color: var(--accent); border-color: rgba(242, 201, 76, .4); background: rgba(242, 201, 76, .1); }

@@ -12,7 +12,7 @@ window.CONFIG = {
 
   email: "andres.montoya@pronetsys.com.co",
 
-  github: "https://github.com/Prankandy",
+  github: "",
 
   // Ejemplo: "https://www.linkedin.com/in/tu-usuario"
   linkedin: "https://www.linkedin.com/in/andres-f-montoya-b4a2a1380/",
