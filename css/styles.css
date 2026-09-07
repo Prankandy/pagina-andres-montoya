@@ -778,3 +778,13 @@ html:not(.fx-on) .msg, html:not(.fx-on) .msg-typing i { animation: none; }
 
 /* ---------- Logo con fondo transparente: siempre sobre fondo oscuro ---------- */
 .chat-avatar img, .avatar img, .brand-mark.has-photo img { background: var(--surface-2); }
+
+/* ---------- Logo del hero: más grande y alineado con el título ---------- */
+.avatar { --size: 320px; padding: 6px; }
+.brand-mark { width: 40px; height: 40px; }
+@media (min-width: 861px) {
+  .hero-visual { align-self: start; padding-top: .75rem; }
+}
+@media (max-width: 860px) {
+  .avatar { --size: 200px; }
+}
