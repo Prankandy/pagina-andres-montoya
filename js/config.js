@@ -21,5 +21,5 @@ window.CONFIG = {
 
   // Ruta a tu foto, por ejemplo "assets/foto.jpg".
   // Vacío = se muestran tus iniciales.
-  foto: "assets/Porfile.jpg",
+  foto: "assets/logo.png",
 };

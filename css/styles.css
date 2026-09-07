@@ -775,3 +775,6 @@ html:not(.fx-on) .msg, html:not(.fx-on) .msg-typing i { animation: none; }
 .project-featured::before { opacity: 1; }
 .project-featured p { max-width: 70ch; }
 .project-featured .card-badge { color: var(--accent); border-color: rgba(242, 201, 76, .4); background: rgba(242, 201, 76, .1); }
+
+/* ---------- Logo con fondo transparente: siempre sobre fondo oscuro ---------- */
+.chat-avatar img, .avatar img, .brand-mark.has-photo img { background: var(--surface-2); }
