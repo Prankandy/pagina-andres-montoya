@@ -22,8 +22,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <!-- Decide si corren las animaciones: interruptor "Efectos" del pie (guardado en el navegador) o preferencia del sistema -->
-  <script>(function(){var c="fx-on";try{var v=localStorage.getItem("efectos");if(v==="off"||(v!=="on"&&matchMedia("(prefers-reduced-motion: reduce)").matches))c="fx-off"}catch(e){}document.documentElement.classList.add(c)})();</script>
+  <!-- Las animaciones corren salvo que el sistema tenga activado "reducir movimiento" -->
+  <script>(function(){var c="fx-on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)c="fx-off"}catch(e){}document.documentElement.classList.add(c)})();</script>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>

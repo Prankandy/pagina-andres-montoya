@@ -51,11 +51,9 @@ luz que sigue al cursor, cinta de tecnologías, transiciones) viven en `js/effec
 
 - Respetan la preferencia **"reducir movimiento"** del sistema: si está activa, la página
   se muestra completa y quieta.
-- En el pie de página hay un interruptor **"✨ Efectos"** que permite forzarlos o apagarlos
-  en ese navegador (se guarda en `localStorage`).
 - **Ojo en este PC:** Windows tiene desactivados los "Efectos de animación"
-  (Configuración → Accesibilidad → Efectos visuales), por eso Brave/Chrome no muestran las
-  animaciones hasta que actives ese ajuste o uses el interruptor del pie.
+  (Configuración → Accesibilidad → Efectos visuales), Brave/Chrome no mostrarán las animaciones
+  hasta que actives ese ajuste.
 - Para poner la lluvia de números en otra sección, agrégale la clase `rain-bg`.
 - Las conversaciones del chat se editan en `CHATS` dentro de `js/effects.js`.
 

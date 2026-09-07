@@ -14,26 +14,11 @@
   const CONFIG = window.CONFIG || {};
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
-  // La clase fx-on la pone el script del <head>: preferencia del sistema o
-  // el interruptor "Efectos" del pie de página (guardado en localStorage).
+  // La clase fx-on la pone el script del <head> según la preferencia de
+  // movimiento del sistema.
   const reduceMotion = !document.documentElement.classList.contains("fx-on");
   const finePointer = window.matchMedia("(pointer: fine)").matches;
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-  // ---------- Interruptor "Efectos" en el pie de página ----------
-  const footer = $(".footer-inner");
-  if (footer) {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "fx-toggle";
-    btn.textContent = reduceMotion ? "✨ Efectos: desactivados" : "✨ Efectos: activados";
-    btn.title = "Activar o desactivar las animaciones de esta página";
-    btn.addEventListener("click", () => {
-      try { localStorage.setItem("efectos", reduceMotion ? "on" : "off"); } catch (_) { /* sin almacenamiento */ }
-      window.location.reload();
-    });
-    footer.appendChild(btn);
-  }
 
   // ---------- Barra de progreso de lectura ----------
   const bar = document.createElement("div");

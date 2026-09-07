@@ -37,7 +37,7 @@
   // ---------- Animación de aparición ----------
   const reveals = $$(".reveal");
   // Misma regla que effects.js: la clase fx-on la pone el script del <head>
-  // (preferencia del sistema o interruptor "Efectos" del pie de página).
+  // según la preferencia de movimiento del sistema.
   const reduceMotion = !document.documentElement.classList.contains("fx-on");
   if (!reduceMotion && "IntersectionObserver" in window) {
     const io = new IntersectionObserver((entries) => {

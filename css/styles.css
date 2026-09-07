@@ -530,8 +530,7 @@ main { flex: 1 0 auto; }
    barra de progreso, "subir", aviso y transición entre páginas.
    ============================================================ */
 /* Las animaciones CSS solo corren cuando <html> tiene la clase fx-on.
-   La pone el script del <head> según la preferencia del sistema o el
-   interruptor "Efectos" del pie de página (guardado en el navegador). */
+   La pone el script del <head> según la preferencia de movimiento del sistema. */
 html.fx-on body.page-leave { opacity: 0; transition: opacity .18s ease; }
 
 html.fx-on .hero-copy > * { animation: rise .7s cubic-bezier(.2, .7, .2, 1) backwards; }
@@ -712,14 +711,6 @@ html:not(.fx-on) .msg, html:not(.fx-on) .msg-typing i { animation: none; }
 @media (max-width: 860px) {
   .rain { opacity: .22; -webkit-mask-image: linear-gradient(180deg, #000, transparent 85%); mask-image: linear-gradient(180deg, #000, transparent 85%); }
 }
-
-/* ---------- Interruptor "Efectos" (lo crea effects.js en el pie) ---------- */
-.fx-toggle {
-  background: none; border: 1px solid var(--border-strong); color: var(--muted);
-  border-radius: 999px; padding: .35rem .8rem; font: inherit; font-size: .8rem; cursor: pointer;
-  transition: border-color .2s ease, color .2s ease;
-}
-.fx-toggle:hover { border-color: var(--accent); color: var(--accent); }
 
 /* ---------- Especialidad destacada (facturación electrónica) ---------- */
 .feature {
