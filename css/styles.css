@@ -779,3 +779,6 @@ html:not(.fx-on) .msg, html:not(.fx-on) .msg-typing i { animation: none; }
 @media (max-width: 860px) {
   .avatar { --size: 200px; }
 }
+
+/* Versiones de Posfac bajo la introducción de la sección */
+.posfac-versiones { margin-top: 1.1rem; }
