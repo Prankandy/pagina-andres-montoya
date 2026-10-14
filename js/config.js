@@ -10,7 +10,7 @@ window.CONFIG = {
   // Ejemplo Colombia: "573001234567"
   whatsapp: "573236910298",
 
-  email: "andres.montoya@pronetsys.com.co",
+  email: "nubeandresfmontoya@gmail.com",
 
   github: "",
 
