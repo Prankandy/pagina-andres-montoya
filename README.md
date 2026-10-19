@@ -31,7 +31,7 @@ Pagina Andres F. Montoya/
 │   ├── login.js        #   POST: valida la contraseña y entrega un token de sesión
 │   ├── leads.js        #   GET: lista con filtros · PATCH: cambia el estado
 │   ├── trigger-scraper.js  # POST: corre el rastreo y guarda los leads nuevos
-│   └── _lib/           #   Cliente de Supabase, sesión y rastreo (simulado)
+│   └── _lib/           #   Cliente de Supabase, sesión, alertas de Telegram y rastreo (simulado)
 ├── supabase/schema.sql # Tabla leads: pegar en el SQL Editor de Supabase
 ├── package.json        # Única dependencia: @supabase/supabase-js (la usan las funciones)
 └── README.md
@@ -97,6 +97,8 @@ La tabla tiene RLS activo y sin políticas, así que la clave pública de Supaba
    | `SUPABASE_URL` | `https://huyjdlocyvgyprmkovvj.supabase.co` |
    | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Project Settings → API Keys → **Secret key** (`sb_secret_…`) |
    | `ADMIN_PASSWORD` | La contraseña del panel. Usa una larga (4 o más palabras). |
+   | `TELEGRAM_BOT_TOKEN` | Token del bot (@BotFather). Opcional: sin él no hay alertas. |
+   | `TELEGRAM_CHAT_ID` | Tu chat con el bot (número). Opcional, va junto con el token. |
 
    La clave `sb_publishable_…` **no** sirve aquí. La secret key no va en ningún archivo del repositorio.
 3. Publica (`git push`) y entra a <https://andresfmontoya.vercel.app/admin>.
@@ -107,6 +109,14 @@ sin teléfono ni enlace real; en ellas el botón solo copia la plantilla). Para 
 `delete from public.leads where fuente = 'simulado';`
 
 **Plantillas de mensaje:** se editan en `PLANTILLAS`, al inicio de `js/admin.js`.
+
+**Alertas a Telegram** (`api/_lib/telegram.js`): cada lead nuevo llega como tarjeta al bot
+@AndresF_Montoya_Bot. Los de urgencia alta suenan; los demás llegan en silencio. Si entran más de
+5 a la vez, llega un solo resumen. Si Telegram falla, el lead se guarda igual.
+
+**Duplicados:** un lead no entra dos veces si tiene la misma url o el mismo texto (columna `huella`:
+hash del texto sin tildes, mayúsculas ni signos; los textos de menos de 40 letras no llevan huella).
+Si actualizas desde una versión anterior, vuelve a correr `supabase/schema.sql`: solo agrega lo que falta.
 
 **Probarlo en tu PC:** el panel necesita las funciones de `/api`, que `npx serve` no ejecuta.
 Usa `npx vercel dev` (pide iniciar sesión en Vercel) o pruébalo directamente en el sitio publicado.

@@ -20,8 +20,8 @@ const POR_RONDA = 3;
 
 /**
  * Simula una ronda de rastreo: toma unas publicaciones al azar.
- * La url incluye la fecha, así que repetir el rastreo el mismo día
- * no duplica leads (insertarLeads ignora las url que ya existen).
+ * insertarLeads ignora las repetidas por url o por huella del texto, así
+ * que cada ejemplo entra una sola vez (para volver a probar, borra los simulados).
  * Sin teléfono a propósito: un número inventado podría ser de alguien real.
  */
 export async function buscarNecesidades() {
@@ -33,6 +33,7 @@ export async function buscarNecesidades() {
     .slice(0, POR_RONDA)
     .map(({ i, ...pub }) => ({
       ...pub,
+      urgencia: pub.categoria === "soporte" ? "alta" : "media",
       fuente: "simulado",
       url: `https://example.com/simulado/${hoy}/${i + 1}`,
       telefono: null,

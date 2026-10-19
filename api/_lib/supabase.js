@@ -3,10 +3,12 @@
 //  SOLO SERVIDOR: lo usan las funciones de /api. Usa la clave
 //  service_role, que nunca debe ir en los archivos de js/.
 // ============================================================
+import { createHash } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 
 export const ESTADOS = ["NUEVO", "CONTACTADO", "CERRADO"];
 export const CATEGORIAS = ["soporte", "desarrollo"];
+export const URGENCIAS = ["alta", "media", "baja"];
 
 let cliente;
 
@@ -52,15 +54,27 @@ export async function actualizarEstado(id, estado) {
 }
 
 /**
- * Guarda leads capturados por el rastreo. Los que ya existen (misma url)
- * se ignoran, así que se puede correr varias veces. Devuelve solo los nuevos.
+ * Huella del pedido: el texto sin tildes, mayúsculas ni signos. Así el mismo
+ * pedido publicado en varios sitios entra una sola vez. Los textos cortos no
+ * llevan huella: dos personas distintas pueden escribir "necesito ayuda urgente".
+ */
+export function huellaDe(texto) {
+  const limpio = String(texto || "")
+    .toLowerCase()
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+  return limpio.length >= 40 ? createHash("sha256").update(limpio).digest("hex") : null;
+}
+
+/**
+ * Guarda leads capturados por el rastreo. Los repetidos (misma url o misma
+ * huella) se ignoran, así que se puede correr varias veces. Devuelve solo los nuevos.
  */
 export async function insertarLeads(leads) {
   if (!leads.length) return [];
-  const { data, error } = await supabase()
-    .from("leads")
-    .upsert(leads, { onConflict: "url", ignoreDuplicates: true })
-    .select();
+  const filas = leads.map((lead) => ({ ...lead, huella: lead.huella ?? huellaDe(lead.necesidad) }));
+  const { data, error } = await supabase().rpc("insertar_leads", { filas });
   if (error) throw error;
   return data;
 }

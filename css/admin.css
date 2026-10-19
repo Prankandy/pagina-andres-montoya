@@ -71,6 +71,7 @@
   border: 1px solid var(--border-strong); color: var(--muted);
 }
 .cat-soporte { color: #fca5a5; border-color: rgba(252, 165, 165, .4); background: rgba(252, 165, 165, .08); }
+.cat-urgente { color: #1f0a0a; border-color: #f87171; background: #f87171; font-weight: 600; }
 
 /* Selector de estado con el color de cada estado */
 .estado-select {

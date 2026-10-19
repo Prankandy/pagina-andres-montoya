@@ -220,6 +220,7 @@
     const quien = el("td", "col-lead");
     const nombre = el("span", "lead-nombre", lead.nombre);
     nombre.append(el("span", `cat cat-${lead.categoria}`, CATEGORIAS[lead.categoria] || lead.categoria));
+    if (lead.urgencia === "alta") nombre.append(el("span", "cat cat-urgente", "Urgente"));
     const meta = el("span", "lead-meta");
     const enlace = enlaceCliente(lead);
     if (enlace) {
@@ -337,8 +338,10 @@
     btnRastrear.disabled = true;
     btnRastrear.textContent = "Buscando…";
     try {
-      const { nuevos } = await api("/api/trigger-scraper", { method: "POST" });
-      avisar(nuevos ? `${nuevos} ${nuevos === 1 ? "lead nuevo" : "leads nuevos"}.` : "Sin leads nuevos por ahora.");
+      const { nuevos, alertas } = await api("/api/trigger-scraper", { method: "POST" });
+      avisar(nuevos
+        ? `${nuevos} ${nuevos === 1 ? "lead nuevo" : "leads nuevos"} · ${alertas ? "aviso enviado a Telegram" : "sin aviso a Telegram"}.`
+        : "Sin leads nuevos por ahora.");
       if (nuevos) cargarLeads();
     } catch (err) {
       if (!(err instanceof SesionVencida)) avisar(`El rastreo falló: ${err.message}`);
