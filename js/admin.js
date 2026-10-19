@@ -65,7 +65,8 @@
 
   const relativo = new Intl.RelativeTimeFormat("es", { numeric: "auto" });
   function haceCuanto(iso) {
-    let valor = (new Date(iso) - Date.now()) / 1000;
+    // Si el reloj del PC va atrasado frente a Supabase, la fecha parece futura: se muestra como "ahora".
+    let valor = Math.min(0, (new Date(iso) - Date.now()) / 1000);
     const pasos = [[60, "second"], [60, "minute"], [24, "hour"], [7, "day"], [4.35, "week"], [12, "month"], [Infinity, "year"]];
     for (const [tamano, unidad] of pasos) {
       if (Math.abs(valor) < tamano) return relativo.format(Math.round(valor), unidad);
