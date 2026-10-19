@@ -340,7 +340,7 @@
     try {
       const { nuevos, alertas, errorTelegram } = await api("/api/trigger-scraper", { method: "POST" });
       if (!nuevos) avisar("Sin leads nuevos por ahora.");
-      else if (errorTelegram) avisar(`${nuevos} nuevos, pero sin aviso a Telegram. ${errorTelegram}`, 10000);
+      else if (errorTelegram) avisar(`${nuevos} ${nuevos === 1 ? "nuevo" : "nuevos"}, pero sin aviso a Telegram. ${errorTelegram}`, 12000);
       else avisar(`${nuevos} ${nuevos === 1 ? "lead nuevo" : "leads nuevos"} · aviso enviado a Telegram${alertas > 1 ? ` (${alertas} mensajes)` : ""}.`);
       if (nuevos) cargarLeads();
     } catch (err) {

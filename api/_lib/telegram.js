@@ -40,9 +40,23 @@ function resumen(leads) {
   return [titulo, ...lineas, `<a href="${PANEL}">Abrir panel</a>`].join("\n");
 }
 
-// Al pegar en Vercel a veces se cuela un espacio o un salto de línea.
-const token = () => (process.env.TELEGRAM_BOT_TOKEN || "").trim();
-const chatId = () => (process.env.TELEGRAM_CHAT_ID || "").trim();
+// Al pegar en Vercel a veces se cuelan espacios, comillas o caracteres invisibles.
+const limpiar = (valor) => String(valor || "").replace(/[\s"'`​-‍⁠﻿]/g, "");
+const token = () => limpiar(process.env.TELEGRAM_BOT_TOKEN).replace(/^bot/i, "");
+const chatId = () => limpiar(process.env.TELEGRAM_CHAT_ID);
+
+// Describe el token sin revelarlo, para saber qué corregir en Vercel.
+function formaDelToken() {
+  const t = token();
+  if (/^\d{6,12}:[A-Za-z0-9_-]{35}$/.test(t)) {
+    return "el formato es correcto; puede ser un token anterior al último Revoke";
+  }
+  const raros = [...t].filter((c) => !/[A-Za-z0-9_:-]/.test(c))
+    .map((c) => `U+${c.codePointAt(0).toString(16).toUpperCase().padStart(4, "0")}`);
+  const invalidos = raros.length === 1 ? "1 no válido" : `${raros.length} no válidos`;
+  return `tiene ${t.length} caracteres${raros.length ? ` y ${invalidos} (${raros.join(", ")})` : ""};` +
+    ` uno válido es el número del bot, ":" y 35 caracteres`;
+}
 
 async function enviar(texto, { silencioso }) {
   const resp = await fetch(`https://api.telegram.org/bot${token()}/sendMessage`, {
@@ -59,7 +73,7 @@ async function enviar(texto, { silencioso }) {
   if (resp.ok) return;
 
   const motivo = (await resp.json().catch(() => ({}))).description || `error ${resp.status}`;
-  const pista = resp.status === 401 || resp.status === 404 ? " (revisa TELEGRAM_BOT_TOKEN en Vercel)"
+  const pista = resp.status === 401 || resp.status === 404 ? ` (revisa TELEGRAM_BOT_TOKEN en Vercel: ${formaDelToken()})`
     : /chat not found/i.test(motivo) ? " (revisa TELEGRAM_CHAT_ID y que le hayas escrito al bot)"
     : "";
   throw new Error(`Telegram: ${motivo}${pista}`);
