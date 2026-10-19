@@ -78,11 +78,11 @@
   }
 
   let toastTimer;
-  function avisar(texto) {
+  function avisar(texto, duracion = 3200) {
     toast.textContent = texto;
     toast.classList.add("show");
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove("show"), 3200);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), duracion);
   }
 
   // ---------- Sesión (sessionStorage: se borra al cerrar la pestaña) ----------
@@ -338,10 +338,10 @@
     btnRastrear.disabled = true;
     btnRastrear.textContent = "Buscando…";
     try {
-      const { nuevos, alertas } = await api("/api/trigger-scraper", { method: "POST" });
-      avisar(nuevos
-        ? `${nuevos} ${nuevos === 1 ? "lead nuevo" : "leads nuevos"} · ${alertas ? "aviso enviado a Telegram" : "sin aviso a Telegram"}.`
-        : "Sin leads nuevos por ahora.");
+      const { nuevos, alertas, errorTelegram } = await api("/api/trigger-scraper", { method: "POST" });
+      if (!nuevos) avisar("Sin leads nuevos por ahora.");
+      else if (errorTelegram) avisar(`${nuevos} nuevos, pero sin aviso a Telegram. ${errorTelegram}`, 10000);
+      else avisar(`${nuevos} ${nuevos === 1 ? "lead nuevo" : "leads nuevos"} · aviso enviado a Telegram${alertas > 1 ? ` (${alertas} mensajes)` : ""}.`);
       if (nuevos) cargarLeads();
     } catch (err) {
       if (!(err instanceof SesionVencida)) avisar(`El rastreo falló: ${err.message}`);

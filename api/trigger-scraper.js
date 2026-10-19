@@ -1,4 +1,4 @@
-// POST /api/trigger-scraper  →  { revisados, nuevos, alertas, leads }
+// POST /api/trigger-scraper  →  { revisados, nuevos, alertas, errorTelegram, leads }
 // Corre una ronda del rastreo (por ahora simulado, ver _lib/scraper.js),
 // guarda en Supabase solo los leads que no existían y avisa por Telegram.
 import { exigirSesion } from "./_lib/auth.js";
@@ -18,8 +18,8 @@ export default async function handler(req, res) {
 
     const encontrados = await buscarNecesidades();
     const nuevos = await insertarLeads(encontrados);
-    const alertas = await avisarLeads(nuevos);
-    return res.status(200).json({ revisados: encontrados.length, nuevos: nuevos.length, alertas, leads: nuevos });
+    const { enviados: alertas, error: errorTelegram } = await avisarLeads(nuevos);
+    return res.status(200).json({ revisados: encontrados.length, nuevos: nuevos.length, alertas, errorTelegram, leads: nuevos });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: err.message || "Error interno." });

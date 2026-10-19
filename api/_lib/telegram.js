@@ -40,37 +40,55 @@ function resumen(leads) {
   return [titulo, ...lineas, `<a href="${PANEL}">Abrir panel</a>`].join("\n");
 }
 
+// Al pegar en Vercel a veces se cuela un espacio o un salto de línea.
+const token = () => (process.env.TELEGRAM_BOT_TOKEN || "").trim();
+const chatId = () => (process.env.TELEGRAM_CHAT_ID || "").trim();
+
 async function enviar(texto, { silencioso }) {
-  const resp = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+  const resp = await fetch(`https://api.telegram.org/bot${token()}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      chat_id: process.env.TELEGRAM_CHAT_ID,
+      chat_id: chatId(),
       text: texto,
       parse_mode: "HTML",
       disable_notification: silencioso,
       link_preview_options: { is_disabled: true },
     }),
   });
-  if (!resp.ok) throw new Error(`Telegram respondió ${resp.status}: ${await resp.text()}`);
+  if (resp.ok) return;
+
+  const motivo = (await resp.json().catch(() => ({}))).description || `error ${resp.status}`;
+  const pista = resp.status === 401 || resp.status === 404 ? " (revisa TELEGRAM_BOT_TOKEN en Vercel)"
+    : /chat not found/i.test(motivo) ? " (revisa TELEGRAM_CHAT_ID y que le hayas escrito al bot)"
+    : "";
+  throw new Error(`Telegram: ${motivo}${pista}`);
 }
 
-/** Avisa de los leads nuevos. Devuelve cuántos mensajes salieron (0 si no está configurado). */
+/**
+ * Avisa de los leads nuevos. Devuelve { enviados, error }; error explica
+ * por qué no salió algún mensaje (para mostrarlo en el panel).
+ */
 export async function avisarLeads(leads) {
-  if (!leads.length || !process.env.TELEGRAM_BOT_TOKEN || !process.env.TELEGRAM_CHAT_ID) return 0;
+  if (!leads.length) return { enviados: 0, error: null };
+  if (!token() || !chatId()) {
+    return { enviados: 0, error: "Faltan TELEGRAM_BOT_TOKEN o TELEGRAM_CHAT_ID en Vercel (o falta redesplegar)." };
+  }
 
   const mensajes = leads.length > MAX_INDIVIDUALES
     ? [{ texto: resumen(leads), silencioso: !leads.some(esUrgente) }]
     : leads.map((lead) => ({ texto: tarjeta(lead), silencioso: !esUrgente(lead) }));
 
   let enviados = 0;
+  let error = null;
   for (const m of mensajes) { // uno tras otro: Telegram limita las ráfagas al mismo chat
     try {
       await enviar(m.texto, m);
       enviados++;
     } catch (err) {
+      error = err.message;
       console.error("Alerta de Telegram no enviada:", err.message);
     }
   }
-  return enviados;
+  return { enviados, error };
 }
