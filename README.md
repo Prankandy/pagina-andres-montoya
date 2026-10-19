@@ -102,7 +102,7 @@ La tabla tiene RLS activo y sin políticas, así que la clave pública de Supaba
 3. Publica (`git push`) y entra a <https://andresfmontoya.vercel.app/admin>.
 
 **El rastreo es simulado:** "Buscar leads ahora" guarda publicaciones de ejemplo (`fuente = simulado`,
-enlaces a example.com, sin teléfono). Para conectar una fuente real, cambia `buscarNecesidades()` en
+sin teléfono ni enlace real; en ellas el botón solo copia la plantilla). Para conectar una fuente real, cambia `buscarNecesidades()` en
 `api/_lib/scraper.js` conservando el formato. Para borrar los de prueba:
 `delete from public.leads where fuente = 'simulado';`
 

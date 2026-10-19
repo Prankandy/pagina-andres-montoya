@@ -63,6 +63,9 @@
     } catch { return null; }
   }
 
+  // Publicación o perfil del cliente. Los leads simulados apuntan a example.com: no se abren.
+  const enlaceCliente = (lead) => (lead.fuente === "simulado" ? null : urlSegura(lead.url));
+
   const relativo = new Intl.RelativeTimeFormat("es", { numeric: "auto" });
   function haceCuanto(iso) {
     // Si el reloj del PC va atrasado frente a Supabase, la fecha parece futura: se muestra como "ahora".
@@ -218,7 +221,7 @@
     const nombre = el("span", "lead-nombre", lead.nombre);
     nombre.append(el("span", `cat cat-${lead.categoria}`, CATEGORIAS[lead.categoria] || lead.categoria));
     const meta = el("span", "lead-meta");
-    const enlace = urlSegura(lead.url);
+    const enlace = enlaceCliente(lead);
     if (enlace) {
       const a = el("a", "", lead.fuente || new URL(enlace).hostname);
       a.href = enlace;
@@ -300,7 +303,7 @@
 
   function etiquetaContacto(lead) {
     if (telefonoDe(lead)) return "Copiar · WhatsApp";
-    return urlSegura(lead.url) ? "Copiar · abrir DM" : "Copiar plantilla";
+    return enlaceCliente(lead) ? "Copiar · abrir DM" : "Copiar plantilla";
   }
 
   async function contactar(lead) {
@@ -309,7 +312,7 @@
     try { await navigator.clipboard.writeText(texto); } catch { copiado = false; }
 
     const tel = telefonoDe(lead);
-    const destino = tel ? `https://wa.me/${tel}?text=${encodeURIComponent(texto)}` : urlSegura(lead.url);
+    const destino = tel ? `https://wa.me/${tel}?text=${encodeURIComponent(texto)}` : enlaceCliente(lead);
     if (destino) window.open(destino, "_blank", "noopener");
 
     avisar(copiado ? "Plantilla copiada. Pégala en el chat." : "No se pudo copiar la plantilla.");
