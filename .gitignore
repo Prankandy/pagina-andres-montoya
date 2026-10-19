@@ -9,5 +9,9 @@ _harness_tmp.html
 # Vercel (si algún día usas la CLI)
 .vercel
 
+# Dependencias de las funciones de /api y claves locales
+node_modules/
+.env*
+
 # Configuración personal del editor
 .vscode/

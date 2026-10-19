@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel de leads · Andrés F. Montoya</title>
+  <!-- Página privada: fuera de buscadores, del menú y del sitemap -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b0f14">
+  <link rel="icon" href="assets/favicon.png" type="image/png" sizes="96x96">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Ir al sitio">
+        <span class="brand-mark" aria-hidden="true">AFM</span>
+        <span class="brand-name">Panel de leads</span>
+      </a>
+      <div class="admin-actions" id="admin-actions" hidden>
+        <button type="button" class="btn btn-primary btn-sm" id="btn-rastrear">Buscar leads ahora</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="btn-salir">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- ENTRADA -->
+    <section class="section page-head" id="login">
+      <div class="container">
+        <form class="contact-form login-card" id="login-form" novalidate>
+          <div>
+            <p class="eyebrow mono">// acceso privado</p>
+            <h1 class="login-title">Panel de leads</h1>
+          </div>
+          <div class="field">
+            <label for="f-password">Contraseña</label>
+            <input id="f-password" name="password" type="password" autocomplete="current-password" required>
+          </div>
+          <p class="form-error" id="login-error" role="alert" hidden></p>
+          <button type="submit" class="btn btn-primary btn-block" id="login-submit">Entrar</button>
+          <p class="form-note">La sesión se cierra sola al cerrar la pestaña o a las 12 horas.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- PANEL -->
+    <section class="section page-head panel" id="panel" hidden>
+      <div class="container">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow mono">// leads</p>
+            <h1 class="page-title">Necesidades por atender</h1>
+            <p class="section-intro">Personas y negocios que pidieron ayuda. Copia la plantilla, escríbeles y lleva el estado al día.</p>
+          </div>
+        </div>
+
+        <div class="panel-toolbar">
+          <div class="tabs" role="group" aria-label="Categoría">
+            <button type="button" class="tab" data-categoria="" aria-pressed="true">Todos</button>
+            <button type="button" class="tab" data-categoria="soporte" aria-pressed="false">Soporte hoy</button>
+            <button type="button" class="tab" data-categoria="desarrollo" aria-pressed="false">Proyectos dev</button>
+          </div>
+          <div class="field field-inline">
+            <label for="f-estado">Estado</label>
+            <select id="f-estado">
+              <option value="">Todos</option>
+              <option value="NUEVO">Nuevos</option>
+              <option value="CONTACTADO">Contactados</option>
+              <option value="CERRADO">Cerrados</option>
+            </select>
+          </div>
+          <p class="panel-count mono" id="panel-count" aria-live="polite"></p>
+        </div>
+
+        <div class="table-wrap">
+          <table class="leads-table">
+            <thead>
+              <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Lead</th>
+                <th scope="col">Necesidad</th>
+                <th scope="col">Estado</th>
+                <th scope="col"><span class="sr-only">Acciones</span></th>
+              </tr>
+            </thead>
+            <tbody id="leads-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

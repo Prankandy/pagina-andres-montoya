@@ -1,0 +1,9 @@
+{
+  "name": "pagina-andres-montoya",
+  "private": true,
+  "description": "Sitio estático + funciones de Vercel (/api) para el panel de leads",
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "2.117.2"
+  }
+}

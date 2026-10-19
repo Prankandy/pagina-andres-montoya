@@ -2,6 +2,7 @@
 
 Sitio de presentación, catálogo de servicios y contacto para desarrollo de software.
 Es un sitio estático multipágina: **HTML + CSS + JS, sin frameworks ni paso de build**.
+Incluye un panel privado de leads (`/admin`) que usa funciones de Vercel y Supabase.
 
 ## Estructura
 
@@ -23,6 +24,16 @@ Pagina Andres F. Montoya/
 ├── sitemap.xml         # Mapa del sitio para Google (URLs limpias de Vercel)
 ├── assets/og.png       # Imagen de vista previa al compartir el enlace (1200×630)
 ├── vercel.json         # Configuración para publicar en Vercel (URLs limpias: /servicios, /contacto…)
+├── admin.html          # Panel privado de leads (no aparece en el menú ni en buscadores)
+├── css/admin.css       # Estilos propios del panel
+├── js/admin.js         # Panel: sesión, tabla, filtros, estados y plantillas de contacto
+├── api/                # Funciones de Vercel (servidor)
+│   ├── login.js        #   POST: valida la contraseña y entrega un token de sesión
+│   ├── leads.js        #   GET: lista con filtros · PATCH: cambia el estado
+│   ├── trigger-scraper.js  # POST: corre el rastreo y guarda los leads nuevos
+│   └── _lib/           #   Cliente de Supabase, sesión y rastreo (simulado)
+├── supabase/schema.sql # Tabla leads: pegar en el SQL Editor de Supabase
+├── package.json        # Única dependencia: @supabase/supabase-js (la usan las funciones)
 └── README.md
 ```
 
@@ -65,6 +76,40 @@ o el **correo** del visitante con todo listo. No guarda datos de nadie.
 Si más adelante quieres recibir los mensajes en tu bandeja sin que el visitante abra nada,
 puedes conectar el formulario a un servicio gratuito como [Web3Forms](https://web3forms.com)
 o [Formspree](https://formspree.io) cambiando el `submit` en `js/main.js`.
+
+## Panel de leads (`/admin`)
+
+Lista de personas y negocios que pidieron ayuda, con pestañas (Todos, Soporte hoy, Proyectos dev),
+filtro por estado, selector para pasar cada lead de NUEVO a CONTACTADO o CERRADO, y un botón que copia
+una plantilla de mensaje y abre WhatsApp (si hay teléfono) o el enlace del cliente.
+
+**Cómo está protegido:** el navegador nunca ve las claves. La contraseña y la clave de Supabase viven
+en Vercel; `admin.js` solo guarda en `sessionStorage` un token firmado que vence a las 12 horas.
+La tabla tiene RLS activo y sin políticas, así que la clave pública de Supabase no puede leerla.
+
+**Puesta en marcha (una sola vez):**
+
+1. En Supabase → **SQL Editor** → New query, pega `supabase/schema.sql` y pulsa **Run**.
+2. En Vercel → el proyecto → **Settings → Environment Variables**, agrega:
+
+   | Variable | Valor |
+   | --- | --- |
+   | `SUPABASE_URL` | `https://huyjdlocyvgyprmkovvj.supabase.co` |
+   | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Project Settings → API Keys → **Secret key** (`sb_secret_…`) |
+   | `ADMIN_PASSWORD` | La contraseña del panel. Usa una larga (4 o más palabras). |
+
+   La clave `sb_publishable_…` **no** sirve aquí. La secret key no va en ningún archivo del repositorio.
+3. Publica (`git push`) y entra a <https://andresfmontoya.vercel.app/admin>.
+
+**El rastreo es simulado:** "Buscar leads ahora" guarda publicaciones de ejemplo (`fuente = simulado`,
+enlaces a example.com, sin teléfono). Para conectar una fuente real, cambia `buscarNecesidades()` en
+`api/_lib/scraper.js` conservando el formato. Para borrar los de prueba:
+`delete from public.leads where fuente = 'simulado';`
+
+**Plantillas de mensaje:** se editan en `PLANTILLAS`, al inicio de `js/admin.js`.
+
+**Probarlo en tu PC:** el panel necesita las funciones de `/api`, que `npx serve` no ejecuta.
+Usa `npx vercel dev` (pide iniciar sesión en Vercel) o pruébalo directamente en el sitio publicado.
 
 ## Publicar gratis en Vercel
 
