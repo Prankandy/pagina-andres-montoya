@@ -100,7 +100,8 @@ La tabla tiene RLS activo y sin políticas, así que la clave pública de Supaba
    | `ADMIN_PASSWORD` | La contraseña del panel. Usa una larga (4 o más palabras). |
    | `TELEGRAM_BOT_TOKEN` | Token del bot (@BotFather). Opcional: sin él no hay alertas. |
    | `TELEGRAM_CHAT_ID` | Tu chat con el bot (número). Opcional, va junto con el token. |
-   | `ANTHROPIC_API_KEY` | console.anthropic.com → API Keys. La usa el filtro con IA del radar. |
+   | `GEMINI_API_KEY` | aistudio.google.com → Get API key (plan gratuito). La usa el filtro con IA del radar. |
+   | `GEMINI_MODEL` | Opcional. Por defecto `gemini-flash-lite-latest`, que Google actualiza solo. |
    | `CRON_SECRET` | La clave que genera `supabase/cron.sql` (paso 3). Permite que Supabase Cron corra el radar. |
 
    La clave `sb_publishable_…` **no** sirve aquí. La secret key no va en ningún archivo del repositorio.
@@ -112,9 +113,12 @@ hace esto en `api/trigger-scraper.js`:
 1. Lee por RSS las publicaciones de las últimas 24 h de r/medellin y r/colombia (`api/_lib/scraper.js`).
    Reddit bloquea los feeds `.json` sin cuenta y permite ~1 consulta por minuto: una sola por ronda.
 2. Descarta las que ya se revisaron (tabla `revisados`) o que repiten el texto de un lead (huella).
-3. Evalúa las nuevas con Claude Haiku 5.5 (`api/_lib/ai-filter.js`), máximo 20 por ronda: ¿es un pedido real?,
-   categoría (soporte inmediato o proyecto), urgencia y resumen de una frase. Cuesta menos de una
-   décima de centavo de dólar por publicación.
+3. Evalúa las nuevas con Gemini en su plan gratuito (`api/_lib/ai-filter.js`): ¿es un pedido real?,
+   categoría (soporte inmediato o proyecto), urgencia y resumen de una frase. Respuesta en JSON
+   forzado con `responseSchema`. De a una y máximo 8 por ronda, porque el plan gratuito limita las
+   consultas por minuto; si Gemini pide esperar o falla la red, la ronda se detiene y esas
+   publicaciones se reintentan en la siguiente (no se pierden). Ojo: en el plan gratuito Google
+   puede usar lo que se le envía para mejorar sus productos; aquí solo van publicaciones públicas de Reddit.
 4. Guarda los pedidos reales como leads (con su resumen) y avisa por Telegram.
 
 Qué cuenta como pedido se ajusta en el texto `SISTEMA` de `api/_lib/ai-filter.js`; los subreddits, en

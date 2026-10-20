@@ -4,7 +4,6 @@
   "description": "Sitio estático + funciones de Vercel (/api) para el panel de leads",
   "type": "module",
   "dependencies": {
-    "@anthropic-ai/sdk": "0.131.0",
     "@supabase/supabase-js": "2.117.2"
   }
 }
