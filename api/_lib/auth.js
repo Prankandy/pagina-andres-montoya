@@ -46,7 +46,13 @@ export function exigirSesion(req, res) {
  * (CRON_SECRET), que usa Supabase Cron para correr el rastreo cada 5 minutos.
  */
 export function exigirSesionOCron(req, res) {
-  const cron = (process.env.CRON_SECRET || "").trim();
+  const cron = claveCron();
   if (cron && iguales(tokenDe(req), cron)) return true;
   return exigirSesion(req, res);
 }
+
+// Al pegar en Vercel a veces se cuelan espacios, comillas, caracteres invisibles
+// o el propio nombre de la variable ("CRON_SECRET=...").
+const claveCron = () => String(process.env.CRON_SECRET || "")
+  .replace(/[\s"'`​-‍⁠﻿]/g, "")
+  .replace(/^CRON_SECRET=/i, "");
