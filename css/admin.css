@@ -63,6 +63,11 @@
 .lead-meta a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
 .lead-meta a:hover { color: var(--accent); }
 .col-necesidad { color: var(--muted); max-width: 46ch; }
+.lead-resumen { display: block; color: var(--text); font-weight: 500; margin-bottom: .3rem; }
+.lead-texto {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3;
+  overflow: hidden; font-size: .85rem; white-space: pre-line;
+}
 .col-accion { text-align: right; white-space: nowrap; }
 
 .cat {

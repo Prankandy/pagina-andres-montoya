@@ -78,3 +78,23 @@ export async function insertarLeads(leads) {
   if (error) throw error;
   return data;
 }
+
+/** De estas publicaciones ({ url, huella, ... }), las que nadie ha revisado todavía. */
+export async function postsSinRevisar(posts) {
+  if (!posts.length) return [];
+  const { data, error } = await supabase().rpc("posts_sin_revisar", {
+    posts: posts.map(({ url, huella }) => ({ url, huella })),
+  });
+  if (error) throw error;
+  const pendientes = new Set(data.map((fila) => fila.pendiente));
+  return posts.filter((p) => pendientes.has(p.url));
+}
+
+/** Anota las publicaciones que ya evaluó la IA (lead o no), para no evaluarlas de nuevo. */
+export async function marcarRevisados(filas) {
+  if (!filas.length) return;
+  const { error } = await supabase()
+    .from("revisados")
+    .upsert(filas, { onConflict: "url", ignoreDuplicates: true });
+  if (error) throw error;
+}

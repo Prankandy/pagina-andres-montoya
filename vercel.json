@@ -1,6 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
+  "functions": {
+    "api/trigger-scraper.js": { "maxDuration": 60 }
+  },
   "trailingSlash": false,
   "headers": [
     {

@@ -20,8 +20,9 @@ function tarjeta(lead) {
   const lineas = [
     `${esUrgente(lead) ? "🔴" : "🟡"} <b>${titulo}</b> · urgencia ${escapar(lead.urgencia)}`,
     `<b>${escapar(lead.nombre)}</b>`,
-    `«${escapar(recortar(lead.necesidad, 400))}»`,
   ];
+  if (lead.resumen) lineas.push(`<i>${escapar(lead.resumen)}</i>`);
+  lineas.push(`«${escapar(recortar(lead.necesidad, lead.resumen ? 300 : 400))}»`);
   const origen = [escapar(lead.fuente || "sin fuente")];
   if (/^https?:\/\//.test(lead.url || "") && lead.fuente !== "simulado") {
     origen.push(`<a href="${escapar(lead.url)}">ver publicación</a>`);
@@ -34,7 +35,7 @@ function tarjeta(lead) {
 function resumen(leads) {
   const urgentes = leads.filter(esUrgente).length;
   const lineas = leads.slice(0, 15).map((l) =>
-    `${esUrgente(l) ? "🔴" : "🟡"} <b>${escapar(l.nombre)}</b>: ${escapar(recortar(l.necesidad, 90))}`);
+    `${esUrgente(l) ? "🔴" : "🟡"} <b>${escapar(l.nombre)}</b>: ${escapar(recortar(l.resumen || l.necesidad, 90))}`);
   if (leads.length > 15) lineas.push(`… y ${leads.length - 15} más`);
   const titulo = `<b>${leads.length} leads nuevos</b> (${urgentes} ${urgentes === 1 ? "urgente" : "urgentes"})`;
   return [titulo, ...lineas, `<a href="${PANEL}">Abrir panel</a>`].join("\n");

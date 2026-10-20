@@ -32,10 +32,21 @@ function tokenValido(token) {
   return iguales(firma, firmar(vence));
 }
 
+const tokenDe = (req) => (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
+
 /** Responde 401 y devuelve false si la petición no trae una sesión válida. */
 export function exigirSesion(req, res) {
-  const token = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
-  if (tokenValido(token)) return true;
+  if (tokenValido(tokenDe(req))) return true;
   res.status(401).json({ error: "Sesión vencida o no válida." });
   return false;
+}
+
+/**
+ * Como exigirSesion, pero también acepta la clave de la tarea programada
+ * (CRON_SECRET), que usa Supabase Cron para correr el rastreo cada 5 minutos.
+ */
+export function exigirSesionOCron(req, res) {
+  const cron = (process.env.CRON_SECRET || "").trim();
+  if (cron && iguales(tokenDe(req), cron)) return true;
+  return exigirSesion(req, res);
 }

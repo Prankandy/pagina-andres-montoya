@@ -235,7 +235,14 @@
     if (lead.telefono) meta.append(`${meta.childNodes.length ? " · " : ""}+${lead.telefono}`);
     quien.append(nombre, meta);
 
-    const necesidad = el("td", "col-necesidad", lead.necesidad);
+    const necesidad = el("td", "col-necesidad");
+    if (lead.resumen) {
+      // Resumen de la IA arriba; el texto original debajo, recortado a unas líneas.
+      necesidad.append(el("span", "lead-resumen", lead.resumen), el("span", "lead-texto", lead.necesidad));
+      necesidad.title = lead.necesidad;
+    } else {
+      necesidad.textContent = lead.necesidad;
+    }
 
     const celdaEstado = el("td", "col-estado");
     const select = el("select", "estado-select");
@@ -286,7 +293,10 @@
 
   // ---------- Contacto: copiar plantilla y abrir WhatsApp o el enlace del cliente ----------
   function plantilla(lead) {
-    const texto = lead.necesidad.trim().replace(/\.+$/, ""); // el punto va después de las comillas
+    // En una sola línea: cada renglón (p. ej. título y cuerpo) cierra con punto si no traía signo.
+    const texto = lead.necesidad.split(/\n+/).map((s) => s.trim()).filter(Boolean)
+      .map((s) => (/[.!?…:;]$/.test(s) ? s : `${s}.`)).join(" ")
+      .replace(/\s+/g, " ").replace(/\.+$/, ""); // el punto final va después de las comillas
     const necesidad = texto.length > 160 ? `${texto.slice(0, 157).trimEnd()}…` : texto;
     const datos = {
       nombre: lead.nombre,
@@ -338,11 +348,16 @@
     btnRastrear.disabled = true;
     btnRastrear.textContent = "Buscando…";
     try {
-      const { nuevos, alertas, errorTelegram } = await api("/api/trigger-scraper", { method: "POST" });
-      if (!nuevos) avisar("Sin leads nuevos por ahora.");
-      else if (errorTelegram) avisar(`${nuevos} ${nuevos === 1 ? "nuevo" : "nuevos"}, pero sin aviso a Telegram. ${errorTelegram}`, 12000);
-      else avisar(`${nuevos} ${nuevos === 1 ? "lead nuevo" : "leads nuevos"} · aviso enviado a Telegram${alertas > 1 ? ` (${alertas} mensajes)` : ""}.`);
-      if (nuevos) cargarLeads();
+      const r = await api("/api/trigger-scraper", { method: "POST" });
+      const quedan = r.pendientes - r.evaluados;
+      const detalle = `${r.leidos} publicaciones leídas, ${r.evaluados} evaluadas con IA` +
+        `${quedan > 0 ? `, ${quedan} quedan para la próxima ronda` : ""}.`;
+      const problema = r.errores?.[0] ? ` ${r.errores[0]}` : "";
+
+      if (!r.nuevos) avisar(`Sin leads nuevos: ${detalle}${problema}`, problema ? 12000 : 5000);
+      else if (r.errorTelegram) avisar(`${r.nuevos} ${r.nuevos === 1 ? "nuevo" : "nuevos"}, pero sin aviso a Telegram. ${r.errorTelegram}`, 12000);
+      else avisar(`${r.nuevos} ${r.nuevos === 1 ? "lead nuevo" : "leads nuevos"} · aviso enviado a Telegram. ${detalle}${problema}`, 6000);
+      if (r.nuevos) cargarLeads();
     } catch (err) {
       if (!(err instanceof SesionVencida)) avisar(`El rastreo falló: ${err.message}`);
     } finally {

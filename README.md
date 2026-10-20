@@ -31,8 +31,9 @@ Pagina Andres F. Montoya/
 │   ├── login.js        #   POST: valida la contraseña y entrega un token de sesión
 │   ├── leads.js        #   GET: lista con filtros · PATCH: cambia el estado
 │   ├── trigger-scraper.js  # POST: corre el rastreo y guarda los leads nuevos
-│   └── _lib/           #   Cliente de Supabase, sesión, alertas de Telegram y rastreo (simulado)
-├── supabase/schema.sql # Tabla leads: pegar en el SQL Editor de Supabase
+│   └── _lib/           #   Supabase, sesión, Telegram, lector de Reddit (scraper.js) y filtro con IA (ai-filter.js)
+├── supabase/schema.sql # Tablas leads y revisados: pegar en el SQL Editor de Supabase
+├── supabase/cron.sql   # Radar cada 5 minutos con Supabase Cron
 ├── package.json        # Única dependencia: @supabase/supabase-js (la usan las funciones)
 └── README.md
 ```
@@ -99,14 +100,29 @@ La tabla tiene RLS activo y sin políticas, así que la clave pública de Supaba
    | `ADMIN_PASSWORD` | La contraseña del panel. Usa una larga (4 o más palabras). |
    | `TELEGRAM_BOT_TOKEN` | Token del bot (@BotFather). Opcional: sin él no hay alertas. |
    | `TELEGRAM_CHAT_ID` | Tu chat con el bot (número). Opcional, va junto con el token. |
+   | `ANTHROPIC_API_KEY` | console.anthropic.com → API Keys. La usa el filtro con IA del radar. |
+   | `CRON_SECRET` | La clave que genera `supabase/cron.sql` (paso 3). Permite que Supabase Cron corra el radar. |
 
    La clave `sb_publishable_…` **no** sirve aquí. La secret key no va en ningún archivo del repositorio.
 3. Publica (`git push`) y entra a <https://andresfmontoya.vercel.app/admin>.
 
-**El rastreo es simulado:** "Buscar leads ahora" guarda publicaciones de ejemplo (`fuente = simulado`,
-sin teléfono ni enlace real; en ellas el botón solo copia la plantilla). Para conectar una fuente real, cambia `buscarNecesidades()` en
-`api/_lib/scraper.js` conservando el formato. Para borrar los de prueba:
-`delete from public.leads where fuente = 'simulado';`
+**El radar (Reddit + IA):** cada ronda (botón "Buscar leads ahora" o Supabase Cron cada 5 minutos)
+hace esto en `api/trigger-scraper.js`:
+
+1. Lee por RSS las publicaciones de las últimas 24 h de r/medellin y r/colombia (`api/_lib/scraper.js`).
+   Reddit bloquea los feeds `.json` sin cuenta y permite ~1 consulta por minuto: una sola por ronda.
+2. Descarta las que ya se revisaron (tabla `revisados`) o que repiten el texto de un lead (huella).
+3. Evalúa las nuevas con Claude Haiku 5.5 (`api/_lib/ai-filter.js`), máximo 20 por ronda: ¿es un pedido real?,
+   categoría (soporte inmediato o proyecto), urgencia y resumen de una frase. Cuesta menos de una
+   décima de centavo de dólar por publicación.
+4. Guarda los pedidos reales como leads (con su resumen) y avisa por Telegram.
+
+Qué cuenta como pedido se ajusta en el texto `SISTEMA` de `api/_lib/ai-filter.js`; los subreddits, en
+`SUBREDDITS` de `api/_lib/scraper.js`. Las publicaciones descartadas quedan en `revisados` con su resumen,
+útil para revisar si el filtro deja pasar o descarta de más:
+`select resumen, url from revisados where not es_lead order by revisado_en desc limit 50;`
+
+Para borrar los leads de prueba de la versión simulada: `delete from public.leads where fuente = 'simulado';`
 
 **Plantillas de mensaje:** se editan en `PLANTILLAS`, al inicio de `js/admin.js`.
 
