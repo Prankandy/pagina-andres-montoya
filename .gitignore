@@ -9,9 +9,12 @@ _harness_tmp.html
 # Vercel (si algún día usas la CLI)
 .vercel
 
-# Dependencias de las funciones de /api y claves locales
+# Dependencias de las funciones de /api y claves locales (incluye tools/.env.radar)
 node_modules/
 .env*
+
+# Registro del lector local del radar
+tools/*.log*
 
 # Configuración personal del editor
 .vscode/

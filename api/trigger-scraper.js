@@ -1,11 +1,13 @@
-// POST /api/trigger-scraper
+// POST /api/trigger-scraper   { rss? }
 //   →  { leidos, pendientes, evaluados, nuevos, alertas, errorTelegram, errores, leads }
 // Una ronda del radar: lee Reddit, descarta lo ya revisado (por url o huella),
 // clasifica lo nuevo con Gemini, guarda los pedidos reales y avisa por Telegram.
-// Lo llama el botón del panel (sesión) o Supabase Cron cada 5 minutos (CRON_SECRET).
+// Reddit bloquea las consultas desde Vercel, así que el lector del PC
+// (tools/radar-local.mjs, con CRON_SECRET) envía el feed ya descargado en `rss`.
+// Sin `rss` (botón del panel), el servidor intenta descargarlo él mismo.
 import { clasificarConGemini } from "./_lib/ai-filter.js";
 import { exigirSesionOCron } from "./_lib/auth.js";
-import { leerReddit, textoDe } from "./_lib/scraper.js";
+import { leerReddit, parsearRss, textoDe } from "./_lib/scraper.js";
 import { huellaDe, insertarLeads, marcarRevisados, postsSinRevisar } from "./_lib/supabase.js";
 import { avisarLeads } from "./_lib/telegram.js";
 
@@ -13,14 +15,16 @@ import { avisarLeads } from "./_lib/telegram.js";
 // ronda. Lo que sobre se evalúa en la siguiente (cada 5 minutos con el cron).
 const MAX_EVALUAR = 8;
 const LIMITE_MS = 40_000; // deja margen dentro de los 60 s que dura como máximo la función
+const MAX_RSS = 3_000_000; // el feed de 100 publicaciones pesa ~200 KB
 
-async function correrRadar() {
+async function correrRadar({ rss } = {}) {
   const inicio = Date.now();
   const errores = [];
 
   let posts = [];
   try {
-    posts = (await leerReddit()).map((p) => ({ ...p, huella: huellaDe(textoDe(p)) }));
+    const leidos = rss ? parsearRss(rss) : await leerReddit();
+    posts = leidos.map((p) => ({ ...p, huella: huellaDe(textoDe(p)) }));
   } catch (err) {
     errores.push(err.message);
   }
@@ -78,7 +82,11 @@ export default async function handler(req, res) {
 
   try {
     if (!exigirSesionOCron(req, res)) return;
-    return res.status(200).json(await correrRadar());
+    const { rss } = req.body || {};
+    if (rss !== undefined && (typeof rss !== "string" || rss.length > MAX_RSS || !rss.includes("<feed"))) {
+      return res.status(400).json({ error: "El campo rss debe ser el feed RSS de Reddit." });
+    }
+    return res.status(200).json(await correrRadar({ rss }));
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: err.message || "Error interno." });

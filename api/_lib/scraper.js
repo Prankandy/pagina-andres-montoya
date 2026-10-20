@@ -4,6 +4,9 @@
 //  responde 403 a los feeds .json sin cuenta; el RSS sigue
 //  abierto, pero permite ~1 consulta por minuto, así que todas
 //  van juntas en una sola consulta por ronda.
+//  Reddit también bloquea las consultas desde los servidores de
+//  Vercel: por eso el feed lo descarga tools/radar-local.mjs desde
+//  el PC y lo envía ya descargado (parsearRss lo interpreta).
 // ============================================================
 
 // Donde escriben posibles clientes (no comunidades de programadores). Verificadas por
@@ -13,7 +16,8 @@ const SUBREDDITS = [
   "bucaramanga", "cartagena", "Pereira", "EmprendedorES",
 ];
 const VENTANA_HORAS = 24; // solo publicaciones recientes: un pedido viejo ya no es oportunidad
-const AGENTE = "web:andresfmontoya-radar:v1.0 (contacto: andresfmontoya.vercel.app)";
+export const AGENTE = "web:andresfmontoya-radar:v1.0 (contacto: andresfmontoya.vercel.app)";
+export const URL_RSS = `https://www.reddit.com/r/${SUBREDDITS.join("+")}/new/.rss?limit=100`;
 const IGNORAR_AUTORES = new Set(["AutoModerator"]);
 
 const ENTIDADES = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " " };
@@ -39,20 +43,27 @@ function cuerpoDe(contenido) {
 }
 
 /**
- * Lee las publicaciones nuevas. Devuelve [{ url, autor, subreddit, titulo, cuerpo, publicado }]
- * de las últimas VENTANA_HORAS. Lanza un error con el motivo si Reddit no responde.
+ * Descarga el feed desde este servidor. Devuelve lo mismo que parsearRss.
+ * Lanza un error con el motivo si Reddit no responde.
  */
 export async function leerReddit() {
-  const resp = await fetch(`https://www.reddit.com/r/${SUBREDDITS.join("+")}/new/.rss?limit=100`, {
+  const resp = await fetch(URL_RSS, {
     headers: { "User-Agent": AGENTE, Accept: "application/atom+xml" },
     signal: AbortSignal.timeout(15000),
   });
   if (resp.status === 429) throw new Error("Reddit pidió esperar (429); la próxima ronda lo intenta de nuevo.");
-  if (!resp.ok) {
-    throw new Error(`Reddit respondió ${resp.status}${resp.status === 403 ? " (bloqueó la consulta desde este servidor)" : ""}.`);
+  if (resp.status === 403) {
+    throw new Error("Reddit respondió 403: bloquea las consultas desde los servidores de Vercel. El lector de tu PC (tools/radar-local.mjs) envía el feed cada 5 minutos.");
   }
+  if (!resp.ok) throw new Error(`Reddit respondió ${resp.status}.`);
+  return parsearRss(await resp.text());
+}
 
-  const xml = await resp.text();
+/**
+ * Convierte el RSS de Reddit en [{ url, autor, subreddit, titulo, cuerpo, publicado }],
+ * solo con publicaciones de las últimas VENTANA_HORAS y enlaces de reddit.com.
+ */
+export function parsearRss(xml) {
   const desde = Date.now() - VENTANA_HORAS * 3600 * 1000;
 
   return xml.split("<entry>").slice(1)

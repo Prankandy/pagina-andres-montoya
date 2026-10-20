@@ -113,8 +113,22 @@ La tabla tiene RLS activo y sin políticas, así que la clave pública de Supaba
    La clave `sb_publishable_…` **no** sirve aquí. La secret key no va en ningún archivo del repositorio.
 3. Publica (`git push`) y entra a <https://andresfmontoya.vercel.app/admin>.
 
-**El radar (Reddit + IA):** cada ronda (botón "Buscar leads ahora" o Supabase Cron cada 5 minutos)
-hace esto en `api/trigger-scraper.js`:
+**Lector local (Reddit bloquea a Vercel):** desde el 2026-10-20 Reddit responde 403 a las consultas
+que salen de los servidores de Vercel, pero no a una conexión de casa. Por eso el feed lo descarga
+`tools/radar-local.mjs` desde el PC y lo envía a `/api/trigger-scraper` (con `CRON_SECRET`); el
+servidor hace todo lo demás. Lo corre el Programador de tareas de Windows cada 5 minutos y al iniciar
+sesión, sin abrir ventanas. Solo trabaja con el PC encendido; al encenderlo se pone al día con las
+últimas ~20 horas.
+
+- Clave: `tools/.env.radar` (fuera de git) con `CRON_SECRET=...`, la misma que en Vercel.
+- Instalar: `powershell -ExecutionPolicy Bypass -File tools\instalar-radar.ps1`
+- Registro de cada ronda: `tools/radar-local.log`
+- Quitar: `Unregister-ScheduledTask -TaskName "Radar de leads" -Confirm:$false`
+- El cron de Supabase (`supabase/cron.sql`) queda pausado: `select cron.unschedule('radar-reddit');`.
+  Sirve de nuevo si algún día Reddit aprueba una app con su API oficial.
+
+**El radar (Reddit + IA):** cada ronda (lector del PC, o el botón "Buscar leads ahora", que intenta
+descargar desde Vercel) hace esto en `api/trigger-scraper.js`:
 
 1. Lee por RSS las publicaciones de las últimas 24 h (`api/_lib/scraper.js`) de r/medellin, r/colombia,
    r/Bogota, r/ColombiaReddit, r/Barranquilla, r/bucaramanga, r/cartagena, r/Pereira y r/EmprendedorES.
