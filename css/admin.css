@@ -94,6 +94,26 @@
 .estado-select[data-estado="CERRADO"] { color: var(--ok); border-color: rgba(74, 222, 128, .4); background-color: rgba(74, 222, 128, .07); }
 .estado-select option { background: var(--surface); color: var(--text); }
 
+/* ---------- Captura manual ---------- */
+.captura {
+  background: var(--surface); border: 1px solid rgba(242, 201, 76, .35); border-radius: var(--radius);
+  padding: 1.25rem; margin-bottom: 1rem; box-shadow: var(--shadow);
+}
+.captura[hidden] { display: none; }
+.captura-titulo { font-size: 1.15rem; margin: 0 0 .9rem; }
+.captura form { display: grid; gap: .9rem; }
+.captura-fila { display: grid; grid-template-columns: 2fr 1.2fr 1fr; gap: .9rem; }
+.captura-acciones { display: flex; flex-wrap: wrap; gap: .5rem; }
+.captura-ayuda { margin: 0; color: var(--muted); font-size: .82rem; }
+.marcador {
+  display: inline-block; padding: .1rem .55rem; border-radius: 999px; cursor: grab;
+  border: 1px dashed var(--accent); color: var(--accent); font-weight: 600;
+}
+.login-nota[hidden] { display: none; }
+@media (max-width: 760px) {
+  .captura-fila { grid-template-columns: 1fr; }
+}
+
 /* ---------- Contadores por estado ---------- */
 .panel-stats { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 1rem; }
 .panel-stats[hidden] { display: none; }

@@ -43,6 +43,7 @@
             <input id="f-password" name="password" type="password" autocomplete="current-password" required>
           </div>
           <p class="form-error" id="login-error" role="alert" hidden></p>
+          <p class="form-note login-nota" id="login-nota" hidden>Entra para guardar el pedido que enviaste con el marcador.</p>
           <button type="submit" class="btn btn-primary btn-block" id="login-submit">Entrar</button>
           <p class="form-note">La sesión se cierra sola al cerrar la pestaña o a las 12 horas.</p>
         </form>
@@ -77,7 +78,47 @@
           </div>
           <p class="panel-count mono" id="panel-count" aria-live="polite"></p>
           <button type="button" class="btn btn-ghost btn-sm" id="btn-exportar">Exportar CSV</button>
+          <button type="button" class="btn btn-primary btn-sm" id="btn-agregar">+ Agregar lead</button>
         </div>
+
+        <!-- Captura manual: botón "Agregar lead" o marcador "Enviar al radar" -->
+        <section class="captura" id="captura" aria-labelledby="captura-titulo" hidden>
+          <h2 class="captura-titulo" id="captura-titulo">Agregar lead</h2>
+          <form id="captura-form" novalidate>
+            <div class="field">
+              <label for="c-texto">Texto del pedido</label>
+              <textarea id="c-texto" name="necesidad" rows="5" maxlength="5000" required
+                placeholder="Pega lo que escribió la persona (Facebook, WhatsApp, LinkedIn, Workana…)"></textarea>
+            </div>
+            <div class="captura-fila">
+              <div class="field">
+                <label for="c-url">Enlace (opcional)</label>
+                <input id="c-url" name="url" type="url" inputmode="url" placeholder="https://…">
+              </div>
+              <div class="field">
+                <label for="c-nombre">Quién (opcional)</label>
+                <input id="c-nombre" name="nombre" type="text" maxlength="120" placeholder="Nombre o negocio">
+              </div>
+              <div class="field">
+                <label for="c-categoria">Categoría</label>
+                <select id="c-categoria" name="categoria">
+                  <option value="auto">Que decida la IA</option>
+                  <option value="soporte">Soporte</option>
+                  <option value="desarrollo">Desarrollo</option>
+                </select>
+              </div>
+            </div>
+            <p class="form-error" id="captura-error" role="alert" hidden></p>
+            <div class="captura-acciones">
+              <button type="submit" class="btn btn-primary btn-sm" id="captura-guardar">Guardar lead</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="captura-cancelar">Cancelar</button>
+            </div>
+            <p class="captura-ayuda">
+              Atajo: arrastra <a class="marcador" id="marcador" href="#">Enviar al radar</a> a tu barra de favoritos.
+              En Facebook, Workana, LinkedIn o cualquier página, selecciona el pedido y pulsa ese favorito.
+            </p>
+          </form>
+        </section>
 
         <!-- Cuántos leads hay en cada estado (según la pestaña de categoría) -->
         <ul class="panel-stats" id="panel-stats" aria-label="Leads por estado" hidden>

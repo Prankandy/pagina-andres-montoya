@@ -86,6 +86,12 @@ una plantilla de mensaje y abre WhatsApp (si hay teléfono) o el enlace del clie
 
 - **Contadores** de nuevos, contactados y cerrados (con el % cerrado) de la pestaña actual.
 - **Notas** de seguimiento por lead ("Agregar nota"; Ctrl + Enter guarda, Esc cancela). Hasta 2000 caracteres.
+- **Agregar lead** a mano (texto, enlace, quién y categoría o "que decida la IA"): para pedidos que ves en
+  Facebook, WhatsApp, LinkedIn o Workana, donde no se puede automatizar. Gemini le pone resumen y categoría.
+- **Marcador "Enviar al radar"**: en el formulario de captura hay un botón para arrastrar a la barra de
+  favoritos. En cualquier página, selecciona el pedido y pulsa el favorito: se abre el panel con el texto y
+  el enlace listos (en una pestaña que se reutiliza). El texto viaja en el `#` de la dirección, que el
+  navegador no envía al servidor.
 - **Exportar CSV** de lo que se ve con los filtros actuales. Usa `;` y UTF-8 con BOM para que Excel en
   español lo abra en columnas y con tildes; los textos que empiezan con `=`, `+`, `-` o `@` se guardan
   con `'` delante para que Excel no los ejecute como fórmulas.
@@ -121,6 +127,13 @@ sesión, sin abrir ventanas. Solo trabaja con el PC encendido; al encenderlo se 
 últimas ~20 horas.
 
 - Clave: `tools/.env.radar` (fuera de git) con `CRON_SECRET=...`, la misma que en Vercel.
+- Fuentes que descarga: Reddit, Freelancer.com y cada alerta de Google que agregues en
+  `tools/.env.radar` como `ALERTA=<enlace RSS>` (una línea por alerta). Para crearla: en
+  google.com/alerts escribe la búsqueda (p. ej. `"necesito página web" Medellín`), en "Mostrar
+  opciones" elige **Enviar a: Feed RSS**, crea la alerta y copia el enlace del ícono RSS.
+- Freelancer.com es global y casi todo en inglés: solo pasan a la IA los proyectos en español y del
+  rubro (web, tiendas, sistemas, facturación, integraciones…). Allí se cotiza dentro de la plataforma:
+  su plantilla de propuesta no incluye WhatsApp (Freelancer no permite compartir contacto antes de adjudicar).
 - Instalar: `powershell -ExecutionPolicy Bypass -File tools\instalar-radar.ps1`
 - Registro de cada ronda: `tools/radar-local.log`
 - Quitar: `Unregister-ScheduledTask -TaskName "Radar de leads" -Confirm:$false`

@@ -9,7 +9,13 @@
 const modelo = () => (process.env.GEMINI_MODEL || "gemini-flash-lite-latest").trim();
 const clave = () => (process.env.GEMINI_API_KEY || "").trim();
 
-const SISTEMA = `Clasificas publicaciones de Reddit (comunidades de ciudades de Colombia y de emprendedores) para Andrés F. Montoya, desarrollador de software independiente en Medellín. Atiende en remoto a cualquier lugar y en persona solo en Medellín y el Valle de Aburrá.
+const SISTEMA = `Clasificas textos para Andrés F. Montoya, desarrollador de software independiente en Medellín. Atiende en remoto a cualquier lugar y en persona solo en Medellín y el Valle de Aburrá.
+
+Cada texto trae su fuente:
+- Reddit (comunidades de ciudades de Colombia y de emprendedores): una publicación completa.
+- Google Alerts: solo un fragmento de una página web. Es pedido únicamente si quien escribe pide el servicio; no lo son noticias, artículos, guías ni anuncios de empresas que ofrecen ese servicio.
+- Freelancer.com: proyectos remotos que publican clientes. Es pedido si el trabajo está en la lista de abajo.
+- Captura manual: texto que Andrés copió de Facebook, WhatsApp, LinkedIn u otro sitio porque le pareció una oportunidad.
 
 Andrés ofrece:
 - Soporte inmediato (IMMEDIATE): computadores que fallan, formateo, virus, configuración de equipos o programas, POS o lector de código de barras, facturación o nómina electrónica rechazada por la DIAN, tienda online o página web caída.
@@ -60,7 +66,7 @@ function explicar(status, motivo) {
  *   revisada, para no gastar cuota reintentándola cada 5 minutos.
  * - { es_pedido_real: false, ..., error } si falló algo general (ver `fallo`).
  */
-export async function clasificarConGemini({ subreddit, titulo, cuerpo }) {
+export async function clasificarConGemini({ contexto, titulo, cuerpo }) {
   if (!clave()) return fallo("IA: Falta GEMINI_API_KEY en las variables de entorno de Vercel.");
 
   let resp;
@@ -72,7 +78,7 @@ export async function clasificarConGemini({ subreddit, titulo, cuerpo }) {
         systemInstruction: { parts: [{ text: SISTEMA }] },
         contents: [{
           role: "user",
-          parts: [{ text: `Subreddit: r/${subreddit}\nTítulo: ${titulo}\n\n${cuerpo || "(sin texto, solo título)"}` }],
+          parts: [{ text: `Fuente: ${contexto}\nTítulo: ${titulo}\n\n${cuerpo || "(sin texto, solo título)"}` }],
         }],
         generationConfig: { responseMimeType: "application/json", responseSchema: ESQUEMA },
       }),

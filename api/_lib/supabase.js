@@ -90,6 +90,17 @@ export async function insertarLeads(leads) {
   return data;
 }
 
+/** Un lead con el mismo texto (huella) o, si no, con la misma url. null si no hay. */
+export async function buscarLead({ url, huella }) {
+  for (const [columna, valor] of [["huella", huella], ["url", url]]) {
+    if (!valor) continue;
+    const { data, error } = await supabase().from("leads").select("id, url, huella, nombre").eq(columna, valor).limit(1);
+    if (error) throw error;
+    if (data.length) return data[0];
+  }
+  return null;
+}
+
 /** De estas publicaciones ({ url, huella, ... }), las que nadie ha revisado todavía. */
 export async function postsSinRevisar(posts) {
   if (!posts.length) return [];

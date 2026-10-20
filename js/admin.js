@@ -23,7 +23,15 @@
       "Soy {yo} y desarrollo software a la medida: sistemas web, apps e integraciones. Me gustaría proponerte una solución.",
       "¿Hablamos por WhatsApp? +{whatsapp} · {sitio}",
     ].join("\n\n"),
+    // Propuesta para Freelancer.com: sin WhatsApp, porque la plataforma no permite
+    // compartir datos de contacto antes de adjudicar el proyecto.
+    freelancer: [
+      "Hola, leí tu proyecto: «{necesidad}».",
+      "Soy {yo}, desarrollador de software en {ubicacion}. Trabajo con sistemas web, tiendas online, integraciones y facturación electrónica, y puedo empezar de inmediato.",
+      "¿Me cuentas un poco más del alcance y los tiempos? Así te preparo una propuesta concreta. Mi trabajo: {sitio}",
+    ].join("\n\n"),
   };
+  const esFreelancer = (lead) => /^freelancer/.test(lead.fuente || "");
 
   const ESTADOS = { NUEVO: "Nuevo", CONTACTADO: "Contactado", CERRADO: "Cerrado" };
   const CATEGORIAS = { soporte: "Soporte", desarrollo: "Desarrollo" };
@@ -34,7 +42,12 @@
   const loginForm = $("#login-form");
   const loginError = $("#login-error");
   const loginSubmit = $("#login-submit");
+  const loginNota = $("#login-nota");
   const password = $("#f-password");
+  const captura = $("#captura");
+  const capturaForm = $("#captura-form");
+  const capturaError = $("#captura-error");
+  const capturaGuardar = $("#captura-guardar");
   const panel = $("#panel");
   const acciones = $("#admin-actions");
   const btnRastrear = $("#btn-rastrear");
@@ -106,9 +119,14 @@
 
   function mostrarPanel() {
     login.hidden = true;
+    loginNota.hidden = true;
     panel.hidden = false;
     acciones.hidden = false;
     cargarLeads();
+    if (capturaPendiente) {
+      abrirCaptura(capturaPendiente);
+      capturaPendiente = null;
+    }
   }
 
   function cerrarSesion(mensaje) {
@@ -122,6 +140,7 @@
     leadsActuales = [];
     conteos = null;
     stats.hidden = true;
+    captura.hidden = true;
     mostrarErrorLogin(mensaje);
     password.focus();
   }
@@ -392,7 +411,8 @@
       whatsapp: (CONFIG.whatsapp || "").replace(/\D/g, ""),
       sitio: location.origin,
     };
-    return (PLANTILLAS[lead.categoria] || PLANTILLAS.desarrollo)
+    const tipo = esFreelancer(lead) ? "freelancer" : lead.categoria;
+    return (PLANTILLAS[tipo] || PLANTILLAS.desarrollo)
       .replace(/\{(\w+)\}/g, (marcador, clave) => datos[clave] ?? marcador);
   }
 
@@ -400,7 +420,8 @@
 
   function etiquetaContacto(lead) {
     if (telefonoDe(lead)) return "Copiar · WhatsApp";
-    return enlaceCliente(lead) ? "Copiar · abrir DM" : "Copiar plantilla";
+    if (!enlaceCliente(lead)) return "Copiar plantilla";
+    return esFreelancer(lead) ? "Copiar · abrir proyecto" : "Copiar · abrir DM";
   }
 
   async function contactar(lead) {
@@ -497,6 +518,98 @@
     }
   });
 
+  // ---------- Captura manual: "Agregar lead" y marcador "Enviar al radar" ----------
+  // El marcador abre /admin#capturar&texto=…&url=… en una pestaña llamada "afm-radar"
+  // (se reutiliza, así que la sesión sigue abierta). El pedido viaja en el hash, que el
+  // navegador no envía al servidor.
+  function capturaDelHash() {
+    if (!location.hash.startsWith("#capturar")) return null;
+    const p = new URLSearchParams(location.hash.slice("#capturar".length).replace(/^&/, ""));
+    history.replaceState(null, "", location.pathname + location.search); // al recargar no se repite
+    return { necesidad: (p.get("texto") || "").trim(), url: p.get("url") || "", desdeMarcador: true };
+  }
+  let capturaPendiente = capturaDelHash();
+
+  function errorCaptura(mensaje) {
+    capturaError.textContent = mensaje || "";
+    capturaError.hidden = !mensaje;
+  }
+
+  function abrirCaptura(datos = {}) {
+    capturaForm.reset();
+    capturaForm.elements.necesidad.value = datos.necesidad || "";
+    capturaForm.elements.url.value = datos.url || "";
+    errorCaptura(datos.desdeMarcador && !datos.necesidad ? "No había texto seleccionado: pega aquí el pedido." : "");
+    captura.hidden = false;
+    captura.scrollIntoView?.({ block: "start", behavior: "smooth" });
+    (datos.necesidad ? capturaGuardar : capturaForm.elements.necesidad).focus();
+  }
+
+  function cerrarCaptura() {
+    captura.hidden = true;
+    errorCaptura("");
+    $("#btn-agregar").focus();
+  }
+
+  $("#btn-agregar").addEventListener("click", () => abrirCaptura());
+  $("#captura-cancelar").addEventListener("click", cerrarCaptura);
+  capturaForm.addEventListener("keydown", (e) => { if (e.key === "Escape") cerrarCaptura(); });
+
+  capturaForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const campos = capturaForm.elements;
+    const datos = {
+      necesidad: campos.necesidad.value.trim(),
+      url: campos.url.value.trim(),
+      nombre: campos.nombre.value.trim(),
+      categoria: campos.categoria.value,
+    };
+    if (datos.necesidad.length < 10) {
+      errorCaptura("Pega el texto del pedido (al menos 10 caracteres).");
+      campos.necesidad.focus();
+      return;
+    }
+    capturaGuardar.disabled = true;
+    capturaGuardar.textContent = "Guardando… (la IA lo está resumiendo)";
+    try {
+      const { lead, aviso } = await api("/api/leads", { method: "POST", body: datos });
+      cerrarCaptura();
+      avisar(aviso || `Lead guardado: ${lead.resumen || lead.nombre}`, aviso ? 8000 : 4000);
+      cargarLeads();
+    } catch (err) {
+      if (!(err instanceof SesionVencida)) errorCaptura(err.message);
+    } finally {
+      capturaGuardar.disabled = false;
+      capturaGuardar.textContent = "Guardar lead";
+    }
+  });
+
+  window.addEventListener("hashchange", () => {
+    const datos = capturaDelHash();
+    if (!datos) return;
+    if (sesion) {
+      abrirCaptura(datos);
+    } else {
+      capturaPendiente = datos;
+      loginNota.hidden = false;
+    }
+  });
+
+  // El marcador es un enlace "javascript:" que se arrastra a la barra de favoritos.
+  const marcador = $("#marcador");
+  const codigoMarcador = "(()=>{const p=new URLSearchParams({texto:String(getSelection()).trim(),url:location.href});"
+    + `window.open(${JSON.stringify(`${location.origin}/admin`)}+"#capturar&"+p,"afm-radar")})()`;
+  marcador.href = `javascript:${encodeURIComponent(codigoMarcador)}`;
+  marcador.addEventListener("click", (e) => {
+    e.preventDefault();
+    avisar("Arrástralo a tu barra de favoritos; se usa desde otras páginas.");
+  });
+
   // ---------- Inicio ----------
-  if (sesion) mostrarPanel(); else password.focus();
+  if (sesion) {
+    mostrarPanel();
+  } else {
+    loginNota.hidden = !capturaPendiente;
+    password.focus();
+  }
 })();
