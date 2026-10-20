@@ -82,7 +82,13 @@ o [Formspree](https://formspree.io) cambiando el `submit` en `js/main.js`.
 
 Lista de personas y negocios que pidieron ayuda, con pestañas (Todos, Soporte hoy, Proyectos dev),
 filtro por estado, selector para pasar cada lead de NUEVO a CONTACTADO o CERRADO, y un botón que copia
-una plantilla de mensaje y abre WhatsApp (si hay teléfono) o el enlace del cliente.
+una plantilla de mensaje y abre WhatsApp (si hay teléfono) o el enlace del cliente. Además:
+
+- **Contadores** de nuevos, contactados y cerrados (con el % cerrado) de la pestaña actual.
+- **Notas** de seguimiento por lead ("Agregar nota"; Ctrl + Enter guarda, Esc cancela). Hasta 2000 caracteres.
+- **Exportar CSV** de lo que se ve con los filtros actuales. Usa `;` y UTF-8 con BOM para que Excel en
+  español lo abra en columnas y con tildes; los textos que empiezan con `=`, `+`, `-` o `@` se guardan
+  con `'` delante para que Excel no los ejecute como fórmulas.
 
 **Cómo está protegido:** el navegador nunca ve las claves. La contraseña y la clave de Supabase viven
 en Vercel; `admin.js` solo guarda en `sessionStorage` un token firmado que vence a las 12 horas.

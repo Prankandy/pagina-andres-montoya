@@ -94,6 +94,39 @@
 .estado-select[data-estado="CERRADO"] { color: var(--ok); border-color: rgba(74, 222, 128, .4); background-color: rgba(74, 222, 128, .07); }
 .estado-select option { background: var(--surface); color: var(--text); }
 
+/* ---------- Contadores por estado ---------- */
+.panel-stats { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 1rem; }
+.panel-stats[hidden] { display: none; }
+.panel-stats li {
+  padding: .35rem .8rem; border-radius: 999px; font-size: .85rem; color: var(--muted);
+  background: var(--surface); border: 1px solid var(--border);
+}
+.stat-num { font-family: var(--font-head); font-weight: 600; color: var(--text); margin-right: .15rem; }
+.panel-stats li:nth-child(1) .stat-num { color: var(--accent); }
+.panel-stats li:nth-child(2) .stat-num { color: #7cc4ff; }
+.panel-stats li:nth-child(3) .stat-num { color: var(--ok); }
+.stat-pct { color: var(--muted); font-family: var(--font-mono); font-size: .78rem; }
+
+/* ---------- Acciones y notas ---------- */
+.acciones { display: inline-flex; flex-direction: column; align-items: stretch; gap: .4rem; }
+.lead-nota {
+  display: block; margin-top: .45rem; padding: .35rem .6rem; font-size: .8rem; color: var(--text);
+  background: rgba(242, 201, 76, .06); border-left: 2px solid var(--accent); border-radius: 0 6px 6px 0;
+  white-space: pre-line; overflow-wrap: anywhere;
+}
+.lead-nota[hidden] { display: none; }
+.lead-nota::before { content: "Nota · "; color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
+.fila-nota td { background: var(--surface-2); padding: .9rem 1rem 1rem; }
+.leads-table tbody tr.fila-nota:hover { background: transparent; }
+.nota-texto {
+  width: 100%; min-height: 84px; resize: vertical;
+  background: var(--bg); color: var(--text); font: inherit; font-size: .9rem;
+  border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: .6rem .75rem;
+}
+.nota-texto:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(242, 201, 76, .18); }
+.nota-acciones { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: .6rem; }
+.nota-ayuda { color: var(--muted); font-size: .78rem; margin-left: auto; }
+
 .fila-vacia td { text-align: center; color: var(--muted); padding: 3rem 1rem; }
 .fila-vacia .form-error { margin-top: .4rem; }
 
@@ -125,4 +158,8 @@
   .col-accion { grid-column: 2; }
   .fila-vacia { display: block !important; }
   .fila-vacia td { padding: 1.5rem .5rem; }
+  .leads-table tr.fila-nota { display: block; margin-top: -.6rem; padding: .75rem; border-top-left-radius: 0; border-top-right-radius: 0; }
+  .fila-nota td { padding: 0; background: transparent; }
+  .acciones { flex-direction: row; flex-wrap: wrap; justify-content: flex-end; }
+  .nota-ayuda { display: none; }
 }

@@ -32,6 +32,10 @@ alter table public.leads
 alter table public.leads
   add column if not exists resumen text;        -- lo que necesita, en una frase (lo escribe la IA)
 
+-- Panel: notas de seguimiento por lead ("le escribí por DM el martes, pidió cotización").
+alter table public.leads
+  add column if not exists notas text;
+
 -- Publicaciones que la IA ya evaluó, sean lead o no. Evita pagar dos veces por
 -- la misma publicación: el rastreo corre cada 5 minutos y ve las mismas 24 horas.
 create table if not exists public.revisados (
@@ -74,7 +78,21 @@ as $$
       where l.url = p.url or (p.huella is not null and l.huella = p.huella));
 $$;
 
+-- Cuántos leads hay en cada estado (para los contadores del panel), opcionalmente de una categoría.
+create or replace function public.conteo_leads(cat text default null)
+returns table (estado_lead text, cantidad bigint)
+language sql
+stable
+as $$
+  select l.estado, count(*)
+  from public.leads l
+  where cat is null or l.categoria = cat
+  group by l.estado;
+$$;
+
 -- Solo la service_role (funciones de Vercel) puede llamarlas.
+revoke execute on function public.conteo_leads(text) from public, anon, authenticated;
+grant execute on function public.conteo_leads(text) to service_role;
 revoke execute on function public.insertar_leads(jsonb) from public, anon, authenticated;
 grant execute on function public.insertar_leads(jsonb) to service_role;
 revoke execute on function public.posts_sin_revisar(jsonb) from public, anon, authenticated;

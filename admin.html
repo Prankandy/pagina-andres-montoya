@@ -76,7 +76,15 @@
             </select>
           </div>
           <p class="panel-count mono" id="panel-count" aria-live="polite"></p>
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-exportar">Exportar CSV</button>
         </div>
+
+        <!-- Cuántos leads hay en cada estado (según la pestaña de categoría) -->
+        <ul class="panel-stats" id="panel-stats" aria-label="Leads por estado" hidden>
+          <li><span class="stat-num" data-estado="NUEVO">0</span> nuevos</li>
+          <li><span class="stat-num" data-estado="CONTACTADO">0</span> contactados</li>
+          <li><span class="stat-num" data-estado="CERRADO">0</span> cerrados <span class="stat-pct" id="stat-pct"></span></li>
+        </ul>
 
         <div class="table-wrap">
           <table class="leads-table">

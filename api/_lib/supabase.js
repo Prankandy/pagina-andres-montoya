@@ -41,16 +41,27 @@ export async function obtenerLeads({ categoria, estado } = {}) {
   return data;
 }
 
-/** Cambia el estado de un lead. Devuelve el lead actualizado, o null si no existe. */
-export async function actualizarEstado(id, estado) {
+/** Cambia el estado y/o las notas de un lead. Devuelve el lead actualizado, o null si no existe. */
+export async function actualizarLead(id, cambios) {
   const { data, error } = await supabase()
     .from("leads")
-    .update({ estado, actualizado_en: new Date().toISOString() })
+    .update({ ...cambios, actualizado_en: new Date().toISOString() })
     .eq("id", id)
     .select()
     .maybeSingle();
   if (error) throw error;
   return data;
+}
+
+/** Cuántos leads hay en cada estado: { NUEVO, CONTACTADO, CERRADO }. Filtro opcional: categoria. */
+export async function contarPorEstado({ categoria } = {}) {
+  const { data, error } = await supabase().rpc("conteo_leads", { cat: categoria || null });
+  if (error) throw error;
+  const conteo = Object.fromEntries(ESTADOS.map((e) => [e, 0]));
+  for (const { estado_lead, cantidad } of data) {
+    if (estado_lead in conteo) conteo[estado_lead] = Number(cantidad);
+  }
+  return conteo;
 }
 
 /**
