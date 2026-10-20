@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 #  Registra el lector del radar en el Programador de tareas de
 #  Windows: cada 5 minutos y al iniciar sesión, sin abrir ventanas
 #  (conhost --headless). No requiere administrador.
