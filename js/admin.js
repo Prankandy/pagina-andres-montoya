@@ -350,8 +350,9 @@
     try {
       const r = await api("/api/trigger-scraper", { method: "POST" });
       const quedan = r.pendientes - r.evaluados;
-      const detalle = `${r.leidos} publicaciones leídas, ${r.evaluados} evaluadas con IA` +
-        `${quedan > 0 ? `, ${quedan} quedan para la próxima ronda` : ""}.`;
+      const n = (cantidad, uno, varios) => `${cantidad} ${cantidad === 1 ? uno : varios}`;
+      const detalle = `${n(r.leidos, "publicación leída", "publicaciones leídas")}, ${n(r.evaluados, "evaluada", "evaluadas")} con IA` +
+        `${quedan > 0 ? `, ${n(quedan, "queda", "quedan")} para la próxima ronda` : ""}.`;
       const problema = r.errores?.[0] ? ` ${r.errores[0]}` : "";
 
       if (!r.nuevos) avisar(`Sin leads nuevos: ${detalle}${problema}`, problema ? 12000 : 5000);
