@@ -87,7 +87,8 @@ try {
   }
   const quedan = datos.pendientes - datos.evaluados;
   const n = (cantidad, uno, varios) => `${cantidad} ${cantidad === 1 ? uno : varios}`;
-  const detalle = Object.entries(datos.porFuente || {}).map(([tipo, cant]) => `${tipo} ${cant}`).join(", ");
+  // Todas las fuentes descargadas, también las que no aportaron nada en esta ronda.
+  const detalle = [...new Set(feeds.map((f) => f.tipo))].map((tipo) => `${tipo} ${datos.porFuente?.[tipo] || 0}`).join(", ");
   registrar(`${n(datos.leidos, "leída", "leídas")}${detalle ? ` (${detalle})` : ""}`
     + ` · ${n(datos.evaluados, "evaluada", "evaluadas")} con IA · ${n(datos.nuevos, "lead nuevo", "leads nuevos")}`
     + `${quedan > 0 ? ` · ${quedan} para la próxima ronda` : ""}`
