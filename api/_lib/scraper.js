@@ -1,11 +1,17 @@
 // ============================================================
-//  Rastreo de Reddit: publicaciones nuevas de r/medellin y
-//  r/colombia por RSS. Desde 2026 Reddit responde 403 a los
-//  feeds .json sin cuenta; el RSS sigue abierto, pero permite
-//  ~1 consulta por minuto, así que se hace una sola por ronda.
+//  Rastreo de Reddit: publicaciones nuevas de comunidades de
+//  Colombia y de emprendedores, por RSS. Desde 2026 Reddit
+//  responde 403 a los feeds .json sin cuenta; el RSS sigue
+//  abierto, pero permite ~1 consulta por minuto, así que todas
+//  van juntas en una sola consulta por ronda.
 // ============================================================
 
-const SUBREDDITS = ["medellin", "colombia"];
+// Donde escriben posibles clientes (no comunidades de programadores). Verificadas por
+// actividad el 2026-10-19; r/ColombiaReddit es la más ruidosa (política y noticias).
+const SUBREDDITS = [
+  "medellin", "colombia", "Bogota", "ColombiaReddit", "Barranquilla",
+  "bucaramanga", "cartagena", "Pereira", "EmprendedorES",
+];
 const VENTANA_HORAS = 24; // solo publicaciones recientes: un pedido viejo ya no es oportunidad
 const AGENTE = "web:andresfmontoya-radar:v1.0 (contacto: andresfmontoya.vercel.app)";
 const IGNORAR_AUTORES = new Set(["AutoModerator"]);

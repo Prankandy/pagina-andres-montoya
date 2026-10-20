@@ -9,13 +9,13 @@
 const modelo = () => (process.env.GEMINI_MODEL || "gemini-flash-lite-latest").trim();
 const clave = () => (process.env.GEMINI_API_KEY || "").trim();
 
-const SISTEMA = `Clasificas publicaciones de Reddit (r/medellin, r/colombia) para Andrés F. Montoya, desarrollador de software independiente en Medellín.
+const SISTEMA = `Clasificas publicaciones de Reddit (comunidades de ciudades de Colombia y de emprendedores) para Andrés F. Montoya, desarrollador de software independiente en Medellín. Atiende en remoto a cualquier lugar y en persona solo en Medellín y el Valle de Aburrá.
 
 Andrés ofrece:
 - Soporte inmediato (IMMEDIATE): computadores que fallan, formateo, virus, configuración de equipos o programas, POS o lector de código de barras, facturación o nómina electrónica rechazada por la DIAN, tienda online o página web caída.
 - Proyectos de desarrollo (DEV_PROJECT): páginas web, tiendas Shopify o e-commerce, apps, sistemas de inventario o facturación, integraciones (pagos, Addi, DIAN), automatización de procesos, reportes que hoy se hacen a mano en Excel.
 
-es_pedido_real = true solo si quien publica pide ayuda con algo de esa lista, busca a quién contratar para hacerlo, o pide recomendaciones de quién lo haga. Si no, es_pedido_real = false y categoria = NINGUNA. No son pedidos: noticias, opiniones, memes, quejas sin pedido de ayuda, ofertas de empleo de tiempo completo, personas que ofrecen sus propios servicios, ni pedidos de cosas fuera de la lista (cursos, trámites, compras, salud, etc.).
+es_pedido_real = true solo si quien publica pide ayuda con algo de esa lista, busca a quién contratar para hacerlo, o pide recomendaciones de quién lo haga. Si no, es_pedido_real = false y categoria = NINGUNA. No son pedidos: noticias, opiniones, memes, quejas sin pedido de ayuda, ofertas de empleo de tiempo completo, personas que ofrecen sus propios servicios, ni pedidos de cosas fuera de la lista (cursos, trámites, compras, salud, etc.). Tampoco es pedido si exige ir en persona (por ejemplo, reparar un equipo) y quien publica está fuera de Medellín y el Valle de Aburrá; si se puede resolver en remoto (programas, configuración, DIAN, páginas web, sistemas), sí lo es.
 
 urgente = true si el problema tiene detenido su trabajo o negocio ahora, o tiene plazo hoy o mañana.
 

@@ -110,8 +110,11 @@ La tabla tiene RLS activo y sin políticas, así que la clave pública de Supaba
 **El radar (Reddit + IA):** cada ronda (botón "Buscar leads ahora" o Supabase Cron cada 5 minutos)
 hace esto en `api/trigger-scraper.js`:
 
-1. Lee por RSS las publicaciones de las últimas 24 h de r/medellin y r/colombia (`api/_lib/scraper.js`).
-   Reddit bloquea los feeds `.json` sin cuenta y permite ~1 consulta por minuto: una sola por ronda.
+1. Lee por RSS las publicaciones de las últimas 24 h (`api/_lib/scraper.js`) de r/medellin, r/colombia,
+   r/Bogota, r/ColombiaReddit, r/Barranquilla, r/bucaramanga, r/cartagena, r/Pereira y r/EmprendedorES.
+   Reddit bloquea los feeds `.json` sin cuenta y permite ~1 consulta por minuto: todas van en una sola
+   consulta por ronda (las 100 publicaciones más nuevas). Se evitan comunidades de programadores: ahí
+   no escriben clientes y solo gastarían cuota de la IA.
 2. Descarta las que ya se revisaron (tabla `revisados`) o que repiten el texto de un lead (huella).
 3. Evalúa las nuevas con Gemini en su plan gratuito (`api/_lib/ai-filter.js`): ¿es un pedido real?,
    categoría (soporte inmediato o proyecto), urgencia y resumen de una frase. Respuesta en JSON
