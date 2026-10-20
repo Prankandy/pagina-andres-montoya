@@ -75,7 +75,8 @@ try {
     process.exit(1);
   }
   const quedan = datos.pendientes - datos.evaluados;
-  registrar(`${datos.leidos} leídas · ${datos.evaluados} evaluadas con IA · ${datos.nuevos} leads nuevos`
+  const n = (cantidad, uno, varios) => `${cantidad} ${cantidad === 1 ? uno : varios}`;
+  registrar(`${n(datos.leidos, "leída", "leídas")} · ${n(datos.evaluados, "evaluada", "evaluadas")} con IA · ${n(datos.nuevos, "lead nuevo", "leads nuevos")}`
     + `${quedan > 0 ? ` · ${quedan} para la próxima ronda` : ""}`
     + `${datos.errores?.length ? ` · ${datos.errores.join(" | ")}` : ""}`
     + `${datos.nuevos && datos.errorTelegram ? ` · Telegram: ${datos.errorTelegram}` : ""}`);
