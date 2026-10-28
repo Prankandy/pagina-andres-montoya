@@ -9,6 +9,21 @@
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
+  // ---------- Google Analytics 4 (solo si config.js tiene el ID; nunca en el panel) ----------
+  const idAnalytics = (CONFIG.analytics || "").trim();
+  if (/^G-[A-Z0-9]+$/i.test(idAnalytics) && !location.pathname.startsWith("/admin")) {
+    const gtagJs = document.createElement("script");
+    gtagJs.async = true;
+    gtagJs.src = `https://www.googletagmanager.com/gtag/js?id=${idAnalytics}`;
+    document.head.append(gtagJs);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag("js", new Date());
+    window.gtag("config", idAnalytics);
+  }
+  // Cuenta un contacto (clic en WhatsApp/correo o envío del formulario) como evento de GA4.
+  const medirContacto = (metodo) => { if (window.gtag) window.gtag("event", "generate_lead", { method: metodo }); };
+
   // ---------- Año del pie de página ----------
   const year = $("#year");
   if (year) year.textContent = new Date().getFullYear();
@@ -65,6 +80,7 @@
     const kind = link.dataset.contact;
     const value = (CONFIG[kind] || "").trim();
     if (!value) { hideItem(link); return; }
+    if (kind === "whatsapp" || kind === "email") link.addEventListener("click", () => medirContacto(kind));
 
     switch (kind) {
       case "whatsapp":
@@ -155,6 +171,7 @@
         mensaje,
       ].join("\n");
 
+      medirContacto(useWhatsApp ? "formulario-whatsapp" : "formulario-correo");
       if (useWhatsApp) {
         const num = CONFIG.whatsapp.replace(/\D/g, "");
         window.open(`https://wa.me/${num}?text=${encodeURIComponent(texto)}`, "_blank", "noopener");

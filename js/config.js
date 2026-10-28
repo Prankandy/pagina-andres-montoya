@@ -19,6 +19,10 @@ window.CONFIG = {
 
   ubicacion: "Medellín, Colombia",
 
+  // Google Analytics 4: el "ID de medición" de tu propiedad (empieza por "G-").
+  // Vacío = la página no carga analítica.
+  analytics: "",
+
   // Ruta a tu foto, por ejemplo "assets/foto.jpg".
   // Vacío = se muestran tus iniciales.
   foto: "assets/logo.png",

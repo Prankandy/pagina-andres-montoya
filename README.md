@@ -50,6 +50,10 @@ npx -y serve -l 3000 .
 
 1. **`js/config.js`** — pon tu número de WhatsApp (formato `573001234567`), tu correo,
    LinkedIn y, si quieres, la ruta a tu foto (`assets/foto.jpg`). Los enlaces vacíos se ocultan solos.
+   En `analytics` va el ID de medición de Google Analytics 4 (`G-…`): con él, la página mide visitas y
+   cuenta como contacto (`generate_lead`) cada clic en WhatsApp o correo y cada envío del formulario.
+   Vacío = sin analítica. Nunca se carga en `/admin`. Si cambias el WhatsApp o el correo, cámbialos
+   también en los datos estructurados de `index.html` (bloque `ProfessionalService`).
 2. **Textos** — cada página es un archivo independiente; edita el que corresponda.
 3. **Cabecera y pie** — están repetidos en cada página (marcados con un comentario).
    Si agregas o renombras una página, actualiza el menú en las seis.
@@ -188,5 +192,12 @@ Gracias a `cleanUrls` en `vercel.json`, las páginas quedan como `/servicios`, `
 También funciona en Netlify o GitHub Pages sin cambios.
 
 El sitio está publicado en <https://andresfmontoya.vercel.app>. Las etiquetas `canonical`, `og:url`
-y `og:image` de cada página ya apuntan ahí; si cambias de dominio, reemplázalo en las 7 páginas,
+y `og:image` de cada página ya apuntan ahí; si cambias de dominio, reemplázalo en las 7 páginas
+(incluidos los datos estructurados JSON-LD de `index.html` y `facturacion-electronica.html`),
 en `sitemap.xml` y en `robots.txt`.
+
+**SEO:** cada página tiene un solo H1 con su servicio y la ciudad, título de ≤ 65 caracteres y
+descripción de ≤ 160 (Google corta lo que pase de ahí). La portada declara el negocio como
+`ProfessionalService` con zona de servicio Medellín, Valle de Aburrá y Colombia: mantén nombre,
+teléfono y zona iguales en Google Business Profile. Al cambiar páginas, actualiza `<lastmod>` en
+`sitemap.xml`.

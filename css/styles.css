@@ -248,7 +248,7 @@ img, svg { max-width: 100%; display: block; }
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 1.5rem;
 }
-.about-stack h3 { color: var(--accent); font-weight: 500; margin-bottom: 1rem; }
+.about-stack h2, .about-stack h3 { color: var(--accent); font-weight: 500; margin-bottom: 1rem; }
 
 .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
 .chips li {
